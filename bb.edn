@@ -1,0 +1,49 @@
+{:tasks
+ {test    {:doc  "Run all tests"
+           :task (clojure "-X:test")}
+  lint    {:doc  "Lint src/ and test/ with clj-kondo"
+           :task (clojure "-M:lint")}
+  repl    {:doc  "Start a REPL with an nREPL server"
+           :override-builtin true
+           :task (clojure "-M:nrepl")}
+  new-day {:doc      "Create src/aoc/dayNN.clj and its test, e.g. bb new-day 1"
+           :requires ([clojure.string :as str]
+                      [babashka.fs :as fs])
+           :task     (let [n    (or (some-> *command-line-args* first parse-long)
+                                    (throw (ex-info "Usage: bb new-day <day-number>" {})))
+                           nn   (format "%02d" n)
+                           src  (str "src/aoc/day" nn ".clj")
+                           test (str "test/aoc/day" nn "_test.clj")]
+                       (doseq [f [src test]]
+                         (when (fs/exists? f)
+                           (throw (ex-info (str f " already exists") {:file f}))))
+                       (spit src (str/join "\n"
+                                  [(str "(ns aoc.day" nn)
+                                   "  (:require [aoc.input :as input]"
+                                   "            [clojure.string :as str]))"
+                                   ""
+                                   "(def example \"\")"
+                                   ""
+                                   "(defn parse [s]"
+                                   "  (str/split-lines s))"
+                                   ""
+                                   "(defn part-1 [s])"
+                                   ""
+                                   "(defn part-2 [s])"
+                                   ""
+                                   "(comment"
+                                   "  (parse example)"
+                                   "  (part-1 example)"
+                                   (str "  (part-1 (input/slurp-day " n "))")
+                                   "  )"
+                                   ""]))
+                       (spit test (str/join "\n"
+                                   [(str "(ns aoc.day" nn "-test")
+                                    (str "  (:require [aoc.day" nn " :as day]")
+                                    "            [clojure.test :refer [deftest is]]))"
+                                    ""
+                                    "(deftest example"
+                                    "  ;; Replace :answer-from-the-puzzle with the example's answer from the puzzle text."
+                                    "  (is (= :answer-from-the-puzzle (day/part-1 day/example))))"
+                                    ""]))
+                       (println "Created" src "and" test))}}}

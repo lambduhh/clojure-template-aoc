@@ -1,0 +1,13 @@
+# Puzzle inputs are personal and must not be published (Advent of Code FAQ).
+inputs/*
+!inputs/.gitkeep
+
+# Tooling caches
+.cpcache/
+.nrepl-port
+.calva/
+.clj-kondo/.cache/
+.lsp/
+.portal/
+target/
+.DS_Store

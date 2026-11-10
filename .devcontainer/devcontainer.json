@@ -1,0 +1,10 @@
+{
+  "name": "clojure-template-aoc",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21",
+  "postCreateCommand": "curl -sL -O https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh && chmod +x linux-install.sh && sudo ./linux-install.sh && rm linux-install.sh && clojure -P -M:test:nrepl:lint && curl -sL https://raw.githubusercontent.com/babashka/babashka/master/install -o install-bb && sudo bash install-bb && rm install-bb",
+  "customizations": {
+    "vscode": {
+      "extensions": ["betterthantomorrow.calva"]
+    }
+  }
+}
