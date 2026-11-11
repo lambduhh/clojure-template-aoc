@@ -1,5 +1,3 @@
-<!-- DRAFT: AI-drafted reference; pending Jordan's review (target L4). Remove this line when endorsed. -->
-
 # clojure-template-aoc
 
 A starter Clojure project with a REPL, tests, and the libraries puzzle solving usually needs. It's built for [Advent of Code](https://adventofcode.com/) but works for any small Clojure project.
