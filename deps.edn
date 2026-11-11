@@ -10,6 +10,12 @@
   org.clojure/data.priority-map   {:mvn/version "1.2.1"}
   org.clojure/core.match          {:mvn/version "1.1.1"}
   dev.weavejester/medley          {:mvn/version "1.10.0"}
+  instaparse/instaparse           {:mvn/version "1.5.0"}    ; grammars for puzzle input
+  org.clojure/core.async          {:mvn/version "1.9.865"}  ; channels and processes (stable)
+  ;; MD5/SHA hashing as Clojure functions. java.security.MessageDigest covers
+  ;; this too (see src/howto/hashing.clj); the library keeps interop out of
+  ;; a learner's way.
+  org.clj-commons/digest          {:mvn/version "1.4.100"}
   com.datomic/local               {:mvn/version "1.0.301"}}
 
  :aliases
@@ -24,6 +30,12 @@
   ;; Opt in to the Clojure 1.13 alpha for feature sessions:
   ;; clojure -M:1.13:nrepl
   :1.13  {:override-deps {org.clojure/clojure {:mvn/version "1.13.0-alpha11"}}}
+
+  ;; core.async.flow ships only in core.async alphas (not in 1.9.865).
+  ;; clojure -M:flow:nrepl   adds flow/ (the flow how-to) and the alpha
+  ;; tests for it: clojure -M:flow:test -d flow-test
+  :flow  {:extra-paths ["flow" "flow-test"]
+          :override-deps {org.clojure/core.async {:mvn/version "1.10.874-alpha3"}}}
 
   ;; Terminal REPL with an nREPL server for editors to connect to.
   ;; (Calva's jack-in doesn't need this.)

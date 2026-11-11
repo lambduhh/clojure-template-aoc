@@ -2,6 +2,11 @@
   "Keeps the ;=> results in src/howto/ honest: each example's documented
   result is asserted here."
   (:require [aoc.day00 :as day00]
+            [clj-commons.digest]
+            [howto.channels]
+            [howto.hashing]
+            [howto.parsing]
+            [instaparse.core]
             [clojure.data.csv :as csv]
             [clojure.data.json :as json]
             [clojure.math.combinatorics :as combo]
@@ -32,3 +37,17 @@
     (d/transact conn {:tx-data (hd/->tx (day00/parse day00/example))})
     (is (= #{["alice" 7] ["bob" 5] ["carol" 1]}
            (set (d/q hd/totals-query (d/db conn)))))))
+
+(deftest parsing
+  (is (= [{:op :move :n 3 :from "A" :to "B"} {:op :swap :a "A" :b "C"}]
+         (howto.parsing/parse "move 3 from A to B\nswap A C")))
+  (is (instaparse.core/failure? (howto.parsing/grammar "jump 3"))))
+
+(deftest hashing
+  (is (= "900150983cd24fb0d6963f7d28e17f72" (clj-commons.digest/md5 "abc")))
+  (is (= "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad" (clj-commons.digest/sha-256 "abc")))
+  (is (= (clj-commons.digest/md5 "abc") (howto.hashing/md5-with-java "abc"))
+      "the library and Java's MessageDigest agree"))
+
+(deftest channels
+  (is (= [3 5 7] (howto.channels/run-chain [inc #(* 2 %) dec] [1 2 3]))))

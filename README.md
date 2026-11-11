@@ -48,6 +48,7 @@ Defined in [`deps.edn`](deps.edn).
 | `:lint` | [clj-kondo](https://github.com/clj-kondo/clj-kondo) 2026.10.26 | Linting |
 | `:portal` | [Portal](https://github.com/djblue/portal) 0.68.1 | Inspecting data in a browser, e.g. `-M:portal:nrepl` |
 | `:bench` | [Criterium](https://github.com/hugoduncan/criterium) 0.4.6 | Benchmarking, e.g. `(criterium.core/quick-bench ...)` |
+| `:flow` | core.async 1.10.874-alpha3 instead of 1.9.865, plus `flow/` and `flow-test/` | `core.async.flow`, which ships only in core.async alphas. Run its test with `clojure -M:flow:test -d flow-test` |
 | `:clerk` | [Clerk](https://github.com/nextjournal/clerk) 0.18.1158 | Notebooks, e.g. `(nextjournal.clerk/serve! {:browse true})` |
 
 Aliases combine, e.g. `clojure -M:portal:clerk:nrepl`.
@@ -64,6 +65,9 @@ Aliases combine, e.g. `clojure -M:portal:clerk:nrepl`.
 | [data.priority-map](https://github.com/clojure/data.priority-map) | 1.2.1 | `clojure.data.priority-map` | Priority queues, e.g. for shortest paths |
 | [core.match](https://github.com/clojure/core.match) | 1.1.1 | `clojure.core.match` | Pattern matching |
 | [Medley](https://github.com/weavejester/medley) | 1.10.0 | `medley.core` | Small utility functions missing from `clojure.core` |
+| [instaparse](https://github.com/Engelberg/instaparse) | 1.5.0 | `instaparse.core` | Parsing input with a grammar |
+| [core.async](https://github.com/clojure/core.async) | 1.9.865 | `clojure.core.async` | Channels and processes. `core.async.flow` needs the `:flow` alias |
+| [digest](https://github.com/clj-commons/digest) | 1.4.100 | `clj-commons.digest` | MD5, SHA and other hashes as plain functions. Java's built-in `java.security.MessageDigest` does the same with interop; `src/howto/hashing.clj` shows both |
 | [Datomic Local](https://docs.datomic.com/datomic-local.html) | 1.0.301 | `datomic.client.api` | A Datalog database, in memory or on disk. Free; binaries are Apache 2.0 |
 
 ## Layout
@@ -74,7 +78,9 @@ bb.edn                 babashka tasks
 inputs/                your puzzle inputs (git-ignored; see below)
 src/aoc/input.clj      reads inputs/dayNN.txt
 src/aoc/day00.clj      a made-up example day: example, parse, part-1, part-2
-src/howto/             one namespace per how-to (JSON and CSV, combinatorics, shortest paths, Datomic)
+src/howto/             one namespace per how-to (JSON and CSV, combinatorics, shortest paths, Datomic,
+                       parsing with instaparse, hashing, core.async channels)
+flow/, flow-test/      the core.async.flow how-to and its test (:flow alias only)
 test/                  tests; test/howto/ checks every result shown in src/howto/
 .devcontainer/         devcontainer and Codespaces setup
 ai/                    optional AI tooling; safe to delete (see ai/README.md)
