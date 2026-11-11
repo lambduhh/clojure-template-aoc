@@ -1,17 +1,51 @@
 (ns howto.json-csv
-  "How to read and write JSON and CSV."
+  "How to read structured text: puzzle input, JSON, and real CSV.
+
+  Puzzle input is almost never real CSV (no header row, no quoting), so the
+  usual tools are regular expressions and the reader. data.csv earns its
+  place for spreadsheet data: Excel, LibreOffice and Google Sheets all read
+  and write CSV."
   (:require [clojure.data.csv :as csv]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojure.edn :as edn]))
+
+;; --- Puzzle-style input --------------------------------------------------
+
+(defn numbers
+  "Every integer in a line, signs included."
+  [line]
+  (map parse-long (re-seq #"-?\d+" line)))
+
+(defn line->vector
+  "Read a comma-separated line as Clojure data. Works because the reader
+  treats commas as whitespace."
+  [line]
+  (edn/read-string (str "[" line "]")))
+
+(comment
+  (numbers "p=0,4 v=3,-3")   ;=> (0 4 3 -3)
+  (line->vector "3,4,3,1,2") ;=> [3 4 3 1 2]
+
+  ;; Trap: CSV keeps the space after a comma, so parse-long gives up.
+  (csv/read-csv "1, 2")      ;=> (["1" " 2"])
+  (parse-long " 2")          ;=> nil
+  )
+
+;; --- JSON ----------------------------------------------------------------
+
+(comment
+  (json/read-str "{\"a\": [1, 2, 3]}" :key-fn keyword) ;=> {:a [1 2 3]}
+  (json/write-str {:a [1 2 3]})                         ;=> "{\"a\":[1,2,3]}"
+  )
+
+;; --- Real CSV, e.g. exported from a spreadsheet --------------------------
 
 (defn csv->maps
-  "Turn CSV text with a header row into a seq of maps with keyword keys."
+  "CSV text with a header row -> a seq of maps with keyword keys."
   [s]
   (let [[header & rows] (csv/read-csv s)]
     (map #(zipmap (map keyword header) %) rows)))
 
 (comment
-  (json/read-str "{\"a\": [1, 2, 3]}" :key-fn keyword) ;=> {:a [1 2 3]}
-  (json/write-str {:a [1 2 3]})                         ;=> "{\"a\":[1,2,3]}"
-  (csv/read-csv "x,y\n1,2\n3,4")                        ;=> (["x" "y"] ["1" "2"] ["3" "4"])
-  (csv->maps "x,y\n1,2\n3,4")                           ;=> ({:x "1", :y "2"} {:x "3", :y "4"})
+  (csv->maps "name,score\n\"Smith, Ada\",3") ;=> ({:name "Smith, Ada", :score "3"})
   )
