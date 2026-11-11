@@ -59,7 +59,7 @@ Aliases combine, e.g. `clojure -M:portal:clerk:nrepl`.
 |---|---|---|---|
 | [Clojure](https://clojure.org) | 1.12.6 | `clojure.core` | The language |
 | [data.json](https://github.com/clojure/data.json) | 2.5.2 | `clojure.data.json` | Reading and writing JSON |
-| [data.csv](https://github.com/clojure/data.csv) | 1.1.1 | `clojure.data.csv` | Reading and writing CSV |
+| [data.csv](https://github.com/clojure/data.csv) | 1.1.1 | `clojure.data.csv` | Reading and writing real CSV, e.g. to and from spreadsheets. Puzzle input is rarely CSV; `src/howto/json_csv.clj` shows the idioms that fit it |
 | [math.combinatorics](https://github.com/clojure/math.combinatorics) | 0.3.2 | `clojure.math.combinatorics` | Combinations, permutations, products, subsets |
 | [math.numeric-tower](https://github.com/clojure/math.numeric-tower) | 0.1.1 | `clojure.math.numeric-tower` | `gcd`, `lcm`, exact `expt` and `sqrt` |
 | [data.priority-map](https://github.com/clojure/data.priority-map) | 1.2.1 | `clojure.data.priority-map` | Priority queues, e.g. for shortest paths |
@@ -67,6 +67,7 @@ Aliases combine, e.g. `clojure -M:portal:clerk:nrepl`.
 | [Medley](https://github.com/weavejester/medley) | 1.10.0 | `medley.core` | Small utility functions missing from `clojure.core` |
 | [instaparse](https://github.com/Engelberg/instaparse) | 1.5.0 | `instaparse.core` | Parsing input with a grammar |
 | [core.async](https://github.com/clojure/core.async) | 1.9.865 | `clojure.core.async` | Channels and processes. `core.async.flow` needs the `:flow` alias |
+| [loom](https://github.com/aysylu/loom) | 1.2.4 | `loom.graph`, `loom.alg` | Graph algorithms: paths, connected components, topological sort, cliques, max flow. Excludes `tailrecursion/cljs-priority-map`, which only ClojureScript needs. `src/howto/graphs.clj` also shows BFS by hand |
 | [digest](https://github.com/clj-commons/digest) | 1.4.100 | `clj-commons.digest` | MD5, SHA and other hashes as plain functions. Java's built-in `java.security.MessageDigest` does the same with interop; `src/howto/hashing.clj` shows both |
 | [Datomic Local](https://docs.datomic.com/datomic-local.html) | 1.0.301 | `datomic.client.api` | A Datalog database, in memory or on disk. Free; binaries are Apache 2.0 |
 
@@ -79,7 +80,7 @@ inputs/                your puzzle inputs (git-ignored; see below)
 src/aoc/input.clj      reads inputs/dayNN.txt
 src/aoc/day00.clj      a made-up example day: example, parse, part-1, part-2
 src/howto/             one namespace per how-to (JSON and CSV, combinatorics, shortest paths, Datomic,
-                       parsing with instaparse, hashing, core.async channels)
+                       parsing with instaparse, hashing, core.async channels, graphs)
 flow/, flow-test/      the core.async.flow how-to and its test (:flow alias only)
 test/                  tests; test/howto/ checks every result shown in src/howto/
 .devcontainer/         devcontainer and Codespaces setup

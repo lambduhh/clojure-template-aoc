@@ -16,6 +16,10 @@
   ;; this too (see src/howto/hashing.clj); the library keeps interop out of
   ;; a learner's way.
   org.clj-commons/digest          {:mvn/version "1.4.100"}
+  ;; Graph algorithms (paths, components, cliques, flow). The exclusion drops
+  ;; ~13 MB of 2015-era ClojureScript jars that JVM and bb users don't need.
+  aysylu/loom                     {:mvn/version "1.2.4"
+                                   :exclusions [tailrecursion/cljs-priority-map]}
   com.datomic/local               {:mvn/version "1.0.301"}}
 
  :aliases
