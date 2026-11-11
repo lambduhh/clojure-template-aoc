@@ -20,3 +20,7 @@ Agents look for instruction files at the repository root. The root `AGENTS.md` i
 On Windows without symlink support, git checks out `AGENTS.md` as a one-line text file that contains the path `ai/AGENTS.md`.
 
 These instructions are a request to the agent, not a lock. An agent that can run code in your REPL can still write files.
+
+## Optional: an MCP server for agent memory
+
+`ai/mcp.json` declares [basic-memory](https://github.com/basicmachines-co/basic-memory), which gives an agent a persistent notes store. To use it with Claude Code, copy it to the repo root as `.mcp.json`, after installing basic-memory (e.g. `brew install basic-memory`).
