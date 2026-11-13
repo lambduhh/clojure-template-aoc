@@ -25,10 +25,9 @@ Check that everything works by running this from the repo root:
 bb test
 ```
 
-The first run downloads the libraries, so it can take a minute. You should see:
+The first run downloads the libraries, so it can take a minute. It ends with a count of tests run, then:
 
 ```
-Ran 5 tests containing 12 assertions.
 0 failures, 0 errors.
 ```
 
@@ -154,10 +153,16 @@ If the file isn't there, you'll get `No input at inputs/day01.txt. Save your puz
 
 | File | Shows you how to | Reach for it when a puzzle says... |
 |---|---|---|
-| [`json_csv.clj`](../src/howto/json_csv.clj) | Read and write JSON and CSV, and turn CSV rows into maps | ...the input is JSON, or rows of comma-separated values |
+| [`json_csv.clj`](../src/howto/json_csv.clj) | Pull numbers out of a line with a regex, read comma-separated lines as data, and read JSON and real CSV | ...each line is a list of numbers, or the input is JSON |
+| [`parsing.clj`](../src/howto/parsing.clj) | Parse structured lines with an [instaparse](https://github.com/Engelberg/instaparse) grammar | ...the input is a list of instructions in a small made-up language |
 | [`combinatorics.clj`](../src/howto/combinatorics.clj) | Generate combinations, permutations, Cartesian products, and subsets | ..."every pair", "every ordering", or "try all choices" |
-| [`shortest_path.clj`](../src/howto/shortest_path.clj) | Find the cheapest path with Dijkstra's algorithm and a priority map | ..."fewest steps", "lowest risk", or "cheapest route" on a grid or graph |
+| [`graphs.clj`](../src/howto/graphs.clj) | Do a breadth-first search by hand, then use [loom](https://github.com/aysylu/loom) for paths, connected components, and topological sort | ..."fewest steps", "which groups are connected", or "A must happen before B" |
+| [`shortest_path.clj`](../src/howto/shortest_path.clj) | Find the cheapest path with Dijkstra's algorithm and a priority map | ..."lowest risk" or "cheapest route", where steps cost different amounts |
+| [`hashing.clj`](../src/howto/hashing.clj) | Compute MD5 and SHA-256 hashes, with a library and with plain Java | ...find a hash that starts with some zeros |
+| [`channels.clj`](../src/howto/channels.clj) | Chain processes together with core.async channels | ...machines that feed their output into each other |
 | [`datomic.clj`](../src/howto/datomic.clj) | Load data into an in-memory Datomic database and query it with Datalog | ...you want to ask questions of your data, like a database (optional; most puzzles don't need it) |
+
+One more how-to, `core.async.flow`, lives in `flow/` because it needs the `:flow` alias. The [README](../README.md#aliases) explains how to use it.
 
 Try changing an example and seeing what happens. For instance, change the grid in `shortest_path.clj` and re-evaluate `dijkstra`. You can't break anything that `git checkout` can't fix.
 
