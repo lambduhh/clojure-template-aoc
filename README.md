@@ -101,4 +101,4 @@ AI tooling is optional and lives in [`ai/`](ai/README.md). The root `AGENTS.md` 
 
 ## License
 
-[MIT](LICENSE).
+Copyright (c) 2026 Jordan Miller. Distributed under the [Eclipse Public License 2.0](LICENSE).
