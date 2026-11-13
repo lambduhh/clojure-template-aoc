@@ -4,7 +4,7 @@
 
 A starter Clojure project with a REPL, tests, and the libraries puzzle solving usually needs. It's built for [Advent of Code](https://adventofcode.com/) but works for any small Clojure project.
 
-This README is a **reference**. For a guided start, see the tutorials on the hub `[link TBD]`.
+This README is a **reference**. For a guided start, see the [tutorial](docs/tutorial.md).
 
 ## Requirements
 
