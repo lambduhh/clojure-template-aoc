@@ -1,8 +1,35 @@
 {:tasks
  {test    {:doc  "Run all tests"
            :task (clojure "-X:test")}
-  lint    {:doc  "Lint src/ and test/ with clj-kondo"
-           :task (clojure "-M:lint")}
+  lint    {:doc  "Lint src/ and test/ with clj-kondo and Splint"
+           :task (do (clojure "-M:lint")
+                     (clojure "-M:splint"))}
+  sins    {:doc      "Check the lint config still catches each sin in lint-fixtures/"
+           :requires ([babashka.process :as p]
+                      [clojure.string :as str])
+           :task     (let [run      (fn [& args]
+                                      (:out (apply p/shell {:out :string :err :string :continue true}
+                                                   "clojure" args)))
+                           kondo    (run "-M:lint" "--lint" "lint-fixtures")
+                           splint   (run "-M:splint" "lint-fixtures")
+                           ;; [sin, tool output, text the warning must contain]
+                           expected [[1  splint "[lint/dorun-map]"]
+                                     [1  kondo  "Unused value"]
+                                     [4  kondo  "read-string can execute code"]
+                                     [5  kondo  "Missing else branch"]
+                                     [5  splint "[lint/if-else-nil]"]
+                                     [6  kondo  "inline def"]
+                                     [9  splint "[lint/fn-wrapper]"]
+                                     [10 kondo  "use alias or :refer"]
+                                     [10 kondo  "Shadowed var: clojure.core/map"]
+                                     [11 splint "[style/prefer-clj-string]"]]
+                           missing  (remove (fn [[_ out text]] (str/includes? out text)) expected)]
+                       (doseq [[sin _ text] expected]
+                         (println (if (some #{[sin text]} (map (fn [[s _ t]] [s t]) missing)) "MISSED" "caught")
+                                  (str "sin " sin ":") text))
+                       (when (seq missing)
+                         (println (count missing) "expected warning(s) missing: the lint config no longer catches every sin.")
+                         (System/exit 1)))}
   repl    {:doc  "Start a REPL with an nREPL server"
            :override-builtin true
            :task (clojure "-M:nrepl")}

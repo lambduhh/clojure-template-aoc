@@ -3,7 +3,8 @@
 
   The digest library wraps java.security.MessageDigest, which is built into
   Java. Both are shown so you can see what the library saves you."
-  (:require [clj-commons.digest :as digest]))
+  (:require [clj-commons.digest :as digest]
+            [clojure.string :as str]))
 
 (comment
   ;; With the library:
@@ -14,8 +15,8 @@
 (defn md5-with-java
   "The same MD5 as a hex string, using Java's MessageDigest directly."
   [^String s]
-  (let [bytes (.digest (java.security.MessageDigest/getInstance "MD5") (.getBytes s "UTF-8"))]
-    (apply str (map #(format "%02x" (bit-and % 0xff)) bytes))))
+  (let [digest-bytes (.digest (java.security.MessageDigest/getInstance "MD5") (.getBytes s "UTF-8"))]
+    (str/join (map #(format "%02x" (bit-and % 0xff)) digest-bytes))))
 
 (comment
   (md5-with-java "abc") ;=> "900150983cd24fb0d6963f7d28e17f72"

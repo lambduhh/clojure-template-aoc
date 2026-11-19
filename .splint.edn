@@ -1,0 +1,10 @@
+;; Splint config: https://github.com/NoahTheDuke/splint
+;; Splint checks code shapes that clj-kondo doesn't. With clj-kondo, it covers
+;; the "twelve sins" a linter can see (README, "Code review").
+;; Rules that fire here for sins: lint/fn-wrapper (sin 9), lint/if-else-nil
+;; (sin 5), style/prefer-clj-string (sin 11), lint/dorun-map (sin 1).
+{;; Taste, not a sin: the template uses classic interop like (.exists f).
+ ;; Clojure 1.12's Class/.method syntax is fine too; pick one per project.
+ lint/prefer-method-values {:enabled false}
+ ;; Taste, not a sin: core.async is often aliased `a` in its own docs.
+ naming/conventional-aliases {:enabled false}}
