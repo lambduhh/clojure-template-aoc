@@ -23,7 +23,8 @@ Run from the repo root. Each `bb` task has a plain `clojure` equivalent.
 |---|---|---|
 | `bb repl` | `clojure -M:nrepl` | Start a REPL with an nREPL server that editors can connect to |
 | `bb test` | `clojure -X:test` | Run all tests |
-| `bb lint` | `clojure -M:lint` | Lint `src/` and `test/` with clj-kondo |
+| `bb lint` | `clojure -M:lint` and `clojure -M:splint` | Lint `src/` and `test/` with clj-kondo and Splint |
+| `bb sins` | | Check the lint config still catches each sin in `lint-fixtures/` (see [Code review](#code-review)) |
 | `bb new-day 1` | | Create `src/aoc/day01.clj` and a test that fails until you fill in the example's answer |
 | `bb tasks` | | List the `bb` tasks |
 
@@ -43,7 +44,8 @@ Defined in [`deps.edn`](deps.edn).
 | `:test` | `test/` on the classpath, [test-runner](https://github.com/cognitect-labs/test-runner), and [test.check](https://github.com/clojure/test.check) | Running tests, including property-based tests |
 | `:nrepl` | `test/` on the classpath, and [nREPL](https://nrepl.org) | A terminal REPL your editor can connect to |
 | `:1.13` | Clojure 1.13.0-alpha11 instead of 1.12.6 | Trying 1.13 features. Combine with other aliases, e.g. `-M:1.13:nrepl` |
-| `:lint` | [clj-kondo](https://github.com/clj-kondo/clj-kondo) 2026.10.26 | Linting |
+| `:lint` | [clj-kondo](https://github.com/clj-kondo/clj-kondo) 2026.10.26 | Linting. Config: [`.clj-kondo/config.edn`](.clj-kondo/config.edn) |
+| `:splint` | [Splint](https://github.com/NoahTheDuke/splint) 1.25.0 | Idiom linting. Config: [`.splint.edn`](.splint.edn) |
 | `:portal` | [Portal](https://github.com/djblue/portal) 0.68.1 | Inspecting data in a browser, e.g. `-M:portal:nrepl` |
 | `:bench` | [Criterium](https://github.com/hugoduncan/criterium) 0.4.6 | Benchmarking, e.g. `(criterium.core/quick-bench ...)` |
 | `:flow` | core.async 1.10.874-alpha3 instead of 1.9.865, plus `flow/` and `flow-test/` | `core.async.flow`, which ships only in core.async alphas. Run its test with `clojure -M:flow:test -d flow-test` |
@@ -81,6 +83,7 @@ src/howto/             one namespace per how-to (JSON and CSV, combinatorics, sh
                        parsing with instaparse, hashing, core.async channels, graphs)
 flow/, flow-test/      the core.async.flow how-to and its test (:flow alias only)
 test/                  tests; test/howto/ checks every result shown in src/howto/
+lint-fixtures/         deliberately sinful code that `bb sins` lints (not on the classpath)
 .devcontainer/         devcontainer and Codespaces setup
 ai/                    optional AI tooling; safe to delete (see ai/README.md)
 AGENTS.md              symlink to ai/AGENTS.md, so agents find it
@@ -95,6 +98,27 @@ Save each day's input as `inputs/dayNN.txt`, e.g. `inputs/day01.txt`. Read it wi
 ## Devcontainer
 
 [`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json) uses the `mcr.microsoft.com/devcontainers/java:1-21` image, installs the Clojure CLI and Babashka, downloads the dependencies, and adds Calva. In GitHub, use **Code → Codespaces → Create codespace**.
+
+## Code review
+
+Twelve common mistakes in Clojure code, and what catches them. A linter catches seven of them, at least partly. The other five need a person reading the code.
+
+| # | Sin | Caught by | Source |
+|---|---|---|---|
+| 1 | Side effects inside a lazy sequence (`map` with `println`) | clj-kondo `unused-value`, Splint `lint/dorun-map` (partly) | [Clojure Don'ts: Lazy Effects](https://stuartsierra.com/2015/08/25/clojure-donts-lazy-effects/) |
+| 2 | `concat` in a loop | a reviewer | [Clojure Don'ts: Concat](https://stuartsierra.com/2015/04/26/clojure-donts-concat/) |
+| 3 | Threading mistakes: `->` vs `->>`, `as->` on its own | a reviewer | [Clojure Don'ts: Thread as](https://stuartsierra.com/2018/07/15/clojure-donts-thread-as/) |
+| 4 | `read-string` on input | clj-kondo `discouraged-var` (configured here) | [`read-string` docstring](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/read-string) |
+| 5 | `if` with no else branch | clj-kondo `missing-else-branch`, Splint `lint/if-else-nil` | [Clojure Don'ts: Single-branch if](https://stuartsierra.com/2015/06/16/clojure-donts-single-branch-if/) |
+| 6 | `def` inside a function | clj-kondo `inline-def` | [Style guide](https://guide.clojure.style/#dont-def-vars-inside-fns) |
+| 7 | Optional arguments faked with `& [x]` | a reviewer | [Clojure Don'ts: Optional Arguments with Varargs](https://stuartsierra.com/2015/06/01/clojure-donts-optional-arguments-with-varargs/) |
+| 8 | A parameter that might be a value or a collection | a reviewer | [Clojure Don'ts: The Heisenparameter](https://stuartsierra.com/2015/06/10/clojure-donts-heisenparameter/) |
+| 9 | `#()` misuse: needless wrappers, `#([%])`, `%1 %2` | Splint `lint/fn-wrapper` (partly) | [Clojure Don'ts: Short Fn Syntax](https://stuartsierra.com/2019/09/11/clojure-donts-short-fn-syntax/) |
+| 10 | `:refer :all`, and locals that shadow `clojure.core` | clj-kondo `refer-all`, `shadowed-var` (turned on here) | [Style guide](https://guide.clojure.style/#prefer-require-over-use) |
+| 11 | Java interop where Clojure has a function | Splint `style/prefer-clj-string` (partly) | [Style guide](https://guide.clojure.style/#prefer-clojure-string-over-interop) |
+| 12 | Datomic: querying more than one db value in one unit of work | a reviewer | [Datomic best practices](https://docs.datomic.com/reference/best.html#consistent-db-value-for-unit-of-work) |
+
+`bb sins` lints [`lint-fixtures/twelve_sins.clj`](lint-fixtures/twelve_sins.clj), which commits the sins a linter can see, and fails if any expected warning is missing.
 
 ## Known warnings
 

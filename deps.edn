@@ -51,6 +51,10 @@
   :lint  {:replace-deps {clj-kondo/clj-kondo {:mvn/version "2026.10.26"}}
           :main-opts    ["-m" "clj-kondo.main" "--lint" "src" "test"]}
 
+  ;; Idiom linter: clojure -M:splint   (bb lint runs both)
+  :splint {:replace-deps {io.github.noahtheduke/splint {:mvn/version "1.25.0"}}
+           :main-opts    ["-m" "noahtheduke.splint" "src" "test"]}
+
   ;; Data inspector in the browser. Add to your REPL: clojure -M:portal:nrepl
   :portal {:extra-deps {djblue/portal {:mvn/version "0.68.1"}}}
 

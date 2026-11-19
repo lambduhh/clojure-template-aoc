@@ -16,12 +16,12 @@ carol 1")
 
 (defn parse [s]
   (for [line (str/split-lines s)
-        :let [[name score] (str/split line #" ")]]
-    {:name name :score (parse-long score)}))
+        :let [[player score] (str/split line #" ")]]
+    {:name player :score (parse-long score)}))
 
 (defn totals [entries]
-  (reduce (fn [m {:keys [name score]}]
-            (update m name (fnil + 0) score))
+  (reduce (fn [m {player :name score :score}]
+            (update m player (fnil + 0) score))
           {}
           entries))
 

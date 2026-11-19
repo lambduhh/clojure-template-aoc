@@ -1,0 +1,27 @@
+;; clj-kondo config for learning Clojure through Advent of Code.
+;;
+;; clj-kondo's defaults already catch several common mistakes. This file turns
+;; on a few checks that are off by default but help people new to Clojure, and
+;; flags one function that is unsafe on input you didn't write.
+;;
+;; Each entry names the "sin" it catches; the full list, including the sins no
+;; linter can see, is in the README's "Code review" section.
+;; Linter reference: https://github.com/clj-kondo/clj-kondo/blob/master/doc/linters.md
+{:linters
+ {;; Sin 4. read-string can execute code via *read-eval*. Its docstring:
+  ;; "should be used only with trusted sources. For data structure interop use
+  ;; clojure.edn/read-string". Puzzle input is data, so use the edn reader
+  ;; (or parse-long / parse-double for numbers).
+  :discouraged-var
+  {clojure.core/read-string
+   {:message "Use clojure.edn/read-string (or parse-long) for data: read-string can execute code."}}
+
+  ;; Sin 10. A local named `map`, `str`, `key`... hides the clojure.core
+  ;; function and fails confusingly later. Off by default.
+  :shadowed-var {:level :warning}
+
+  ;; Sin 9. #(inc %) is just inc. Off by default.
+  :redundant-fn-wrapper {:level :warning}
+
+  ;; Sin 5's cousin: (if x nil y) reads better as (when-not x y). Off by default.
+  :if-nil-return {:level :warning}}}

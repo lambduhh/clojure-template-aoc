@@ -22,8 +22,8 @@
     :db/cardinality :db.cardinality/one}])
 
 (defn ->tx [entries]
-  (for [{:keys [name score]} entries]
-    {:score/name name :score/points score}))
+  (for [{player :name score :score} entries]
+    {:score/name player :score/points score}))
 
 (def totals-query
   '[:find ?name (sum ?points)

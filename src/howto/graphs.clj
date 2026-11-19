@@ -15,9 +15,9 @@
   [start neighbors]
   (loop [frontier [start] dist {start 0}]
     (if-let [node (first frontier)]
-      (let [new (remove dist (neighbors node))]
-        (recur (into (subvec frontier 1) new)
-               (into dist (map (fn [n] [n (inc (dist node))]) new))))
+      (let [unseen (remove dist (neighbors node))]
+        (recur (into (subvec frontier 1) unseen)
+               (into dist (map (fn [n] [n (inc (dist node))]) unseen))))
       dist)))
 
 ;; Weighted shortest paths by hand: see howto.shortest-path (Dijkstra).
