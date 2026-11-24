@@ -57,7 +57,7 @@ Start with [Clojure Camp](https://handbook.clojure.camp): its handbook, and its 
 ## 2. Install, or not?
 
 **Don't want to install anything, or on a work laptop?** Use [Codespaces](https://docs.github.com/en/codespaces/overview), if your employer or school allows it.
-1. Click **Use this template** on GitHub to make your own copy.
+1. Go to [lambduhh/clojure-template-aoc](https://github.com/lambduhh/clojure-template-aoc) and click [**Use this template**](https://github.com/lambduhh/clojure-template-aoc/generate) to make your own copy.
 2. On your copy, choose **Code → Codespaces → Create codespace**. It installs Java, the Clojure CLI, Babashka and [Calva](https://calva.io) for you.
 3. Then go to [step 6](#6-start-the-repl) and start the REPL.
 
@@ -143,7 +143,7 @@ bb --version       # should print a version
 
 ## 6. Start the REPL
 
-If you're not in Codespaces, get this template: click **Use this template** on GitHub, or clone it. Then open the folder in your editor.
+If you're not in Codespaces, get this template: click [**Use this template**](https://github.com/lambduhh/clojure-template-aoc/generate) on [lambduhh/clojure-template-aoc](https://github.com/lambduhh/clojure-template-aoc), or clone it. Then open the folder in your editor.
 
 - **In Calva:** open the Command Palette and run **Calva: Start a Project REPL and Connect (aka Jack-In)**. Choose `deps.edn`.
 - **In a terminal:** run `bb repl`, then use your editor's "connect to a running REPL" command.
