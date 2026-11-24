@@ -1,4 +1,4 @@
-<!-- DRAFT: AI-drafted onboarding flowchart; pending Jordan's review. Remove this line when endorsed. -->
+<!-- L3 (Human-verified): AI-drafted onboarding flowchart; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. Remove this line when endorsed (L4). -->
 
 # Set up Clojure: a flowchart
 

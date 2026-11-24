@@ -4,7 +4,7 @@ description: 'Set up a Clojure development environment for a learner (Java, the 
 user_invocable: true
 ---
 
-<!-- DRAFT: AI-drafted agent instructions; pending Jordan's review. Remove this line when endorsed. -->
+<!-- L3 (Human-verified): AI-drafted agent instructions; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. Remove this line when endorsed (L4). -->
 
 # Set up Clojure, then explain it
 
