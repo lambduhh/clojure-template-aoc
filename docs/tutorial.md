@@ -135,10 +135,10 @@ To do it:
 
 ```clojure
 (defn part-1 [s]
-  (count (filter #(> (count %) 3) (parse s))))
+  (count (filter (fn [word] (> (count word) 3)) (parse s))))
 ```
 
-`#(> (count %) 3)` is shorthand for `(fn [word] (> (count word) 3))`.
+`(fn [word] ...)` makes a function without a name. `filter` calls it on each word and keeps the words it returns true for.
 </details>
 
 ### Part 2 changes the question
@@ -148,25 +148,34 @@ Once part 1 passes, Advent of Code shows you part 2. It usually asks something n
 > **Part 2:** what's the total number of letters in the words longer than 3 letters? For the example, that's `10` (`horse` and `zebra`).
 
 1. In `test/aoc/day42_test.clj`, add a second check inside `deftest example`: `(is (= 10 (day/part-2 day/example)))`. Run `bb test`: it's red again.
-2. Both parts start with "the words longer than 3 letters". Pull that step into its own function, and use it in both parts.
+2. Both parts need the same rule: a word is long if it has more than 3 letters. Move that rule out of `part-1` into a function with a name, `long-word?`, and use it in both parts.
 3. Run `bb test` until both checks pass.
 
 <details>
 <summary>Stuck? One possible answer</summary>
 
 ```clojure
-(defn long-words [words]
-  (filter #(> (count %) 3) words))
+(defn long-word? [word]
+  (> (count word) 3))
 
 (defn part-1 [s]
-  (count (long-words (parse s))))
+  (count (filter long-word? (parse s))))
 
 (defn part-2 [s]
-  (reduce + (map count (long-words (parse s)))))
+  (reduce + (map count (filter long-word? (parse s)))))
 ```
+
+The `?` at the end of `long-word?` is a Clojure convention for a function that returns true or false.
 </details>
 
-To add part 2, you changed one line of part 1, added one small function, filled in `part-2`, and added one check. `parse` didn't change, and the next `bb test` told you that part 1 still held. That's the power from the introduction, at puzzle size. Real puzzles are bigger, but the habit carries over: keep `parse` returning plain data, and give the parts small functions they can share.
+Here's everything part 2 changed:
+
+- **`long-word?`**: new. It holds the rule both parts share.
+- **`part-1`**: one line changed. `(fn [word] (> (count word) 3))` became `long-word?`.
+- **`part-2`**: filled in.
+- **The test**: one new check, `(is (= 10 (day/part-2 day/example)))`.
+
+`parse`, `example` and part 1's check didn't change, and the next `bb test` told you that part 1 still held. Now that's what I call power (puzzle-sized). Real puzzles are bigger, but the habit carries over: keep `parse` returning plain data, and give the parts small functions they can share.
 
 That red → green loop is how every day goes: paste the example, write the expected answer into the test, then work in the REPL until the test passes.
 
