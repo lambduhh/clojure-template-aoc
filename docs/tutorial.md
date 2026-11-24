@@ -2,7 +2,9 @@
 
 # Tutorial: from zero to your first passing test
 
-This tutorial takes you from an empty machine to a REPL connected to your editor. Then you'll read a worked example, make a test go from red to green, and take a quick tour of the how-to examples. It takes about an hour.
+This tutorial takes you from an empty machine to a REPL connected to your editor. Then you'll read a worked example, make a test go from red to green, handle a part 2 that changes the question, and take a quick tour of the how-to examples. It takes about an hour.
+
+Along the way, the tutorial aims to show you three things Clojure gives you. **Focus**: you work inside a running program instead of building, running and waiting. **Power**: a change stays where you make it instead of rippling through what already works. **Joy**: what the first two add up to, when you can stay on the problem and trust what you've built.
 
 You don't need to know any Clojure yet. When a command or a setting isn't explained here, the [README](../README.md) has the full reference.
 
@@ -36,6 +38,8 @@ If you don't have Babashka, `clojure -X:test` does the same thing.
 ## 2. Start a REPL and connect your editor
 
 The **REPL** (Read–Eval–Print Loop) is a running Clojure program you send code to, one expression at a time. Clojure programmers keep one open the whole time they work. Most of this tutorial happens there.
+
+Instead of writing a whole program, running it and waiting to find out what happened, you talk to the program while it runs: change one piece, evaluate it, and see the result straight away. That's where the focus comes from.
 
 In Calva, open the Command Palette and run **Calva: Start a Project REPL and Connect (aka Jack-In)**. Choose the `deps.edn` project type. Calva starts the REPL and connects to it.
 
@@ -77,6 +81,10 @@ You can also call the helper functions `part-1` and `part-2` use. Type this into
 ```
 
 That's the core habit: **build up an answer one small expression at a time, checking each result as you go.** If a function you haven't seen before comes up, such as `fnil` or `max-key`, look it up on [ClojureDocs](https://clojuredocs.org).
+
+Each result is plain data, maps and lists you can read, so there's no hidden state to piece together. When the data gets too big to read in the editor, the `:portal` alias opens it in a browser (see the [README](../README.md#aliases)).
+
+If the parentheses are the first thing you notice, keep going. Each pair marks an expression you can evaluate on its own, and that's what makes this habit work.
 
 ## 4. Make a test go from red to green
 
@@ -127,11 +135,47 @@ To do it:
 
 ```clojure
 (defn part-1 [s]
-  (count (filter #(> (count %) 3) (parse s))))
+  (count (filter (fn [word] (> (count word) 3)) (parse s))))
 ```
 
-`#(> (count %) 3)` is shorthand for `(fn [word] (> (count word) 3))`.
+`(fn [word] ...)` makes a function without a name. `filter` calls it on each word and keeps the words it returns true for.
 </details>
+
+### Part 2 changes the question
+
+Once part 1 passes, Advent of Code shows you part 2. It usually asks something new about the same input. That's the moment code either builds on what it has or starts fighting it. Here's the warm-up's part 2:
+
+> **Part 2:** what's the total number of letters in the words longer than 3 letters? For the example, that's `10` (`horse` and `zebra`).
+
+1. In `test/aoc/day42_test.clj`, add a second check inside `deftest example`: `(is (= 10 (day/part-2 day/example)))`. Run `bb test`: it's red again.
+2. Both parts need the same rule: a word is long if it has more than 3 letters. Move that rule out of `part-1` into a function with a name, `long-word?`, and use it in both parts.
+3. Run `bb test` until both checks pass.
+
+<details>
+<summary>Stuck? One possible answer</summary>
+
+```clojure
+(defn long-word? [word]
+  (> (count word) 3))
+
+(defn part-1 [s]
+  (count (filter long-word? (parse s))))
+
+(defn part-2 [s]
+  (reduce + (map count (filter long-word? (parse s)))))
+```
+
+The `?` at the end of `long-word?` is a Clojure convention for a function that returns true or false.
+</details>
+
+Here's everything part 2 changed:
+
+- **`long-word?`**: new. It holds the rule both parts share.
+- **`part-1`**: one line changed. `(fn [word] (> (count word) 3))` became `long-word?`.
+- **`part-2`**: filled in.
+- **The test**: one new check, `(is (= 10 (day/part-2 day/example)))`.
+
+`parse`, `example` and part 1's check didn't change, and the next `bb test` told you that part 1 still held. Now that's what I call power (puzzle-sized). Real puzzles are bigger, but the habit carries over: keep `parse` returning plain data, and give the parts small functions they can share.
 
 That red → green loop is how every day goes: paste the example, write the expected answer into the test, then work in the REPL until the test passes.
 

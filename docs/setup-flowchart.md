@@ -1,8 +1,8 @@
-<!-- L3 (Human-verified): AI-drafted onboarding flowchart; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. Remove this line when endorsed (L4). -->
+<!-- L3 (Human-verified): AI-drafted onboarding flowchart; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. The second sentence of the introduction ("Each situation…") was added later on 2026-11-24, is AI-drafted, and has not been reviewed. Remove this line when endorsed (L4). -->
 
 # Set up Clojure: a flowchart
 
-Brand new to Clojure? Follow the arrows. You'll finish with a REPL running this template, ready for the [tutorial](tutorial.md).
+Brand new to Clojure? Follow the arrows. Each situation has one recommended route, so you don't spend a day choosing tools before you've seen what Clojure is like. You'll finish with a REPL running this template, ready for the [tutorial](tutorial.md).
 
 **What you need:**
 - **Java** and the **Clojure CLI**.

@@ -2,6 +2,8 @@
 
 A starter Clojure project with a REPL, tests, and the libraries puzzle solving usually needs. It's built for [Advent of Code](https://adventofcode.com/) but works for any small Clojure project.
 
+Clojure is a power tool for evolving systems, and each Advent of Code day is a small evolving system: part 2 usually changes the question part 1 asked. The setup here supports that loop. A REPL stays running, your data is there to look at, and a test tells you whether part 1 still holds after you change things for part 2.
+
 This README is a **reference**. For a guided start, see the [tutorial](docs/tutorial.md).
 
 ## Requirements
