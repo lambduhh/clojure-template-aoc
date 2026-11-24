@@ -23,8 +23,8 @@
   (edn/read-string (str "[" line "]")))
 
 (comment
-  (numbers "p=0,4 v=3,-3")   ;=> (0 4 3 -3)
-  (line->vector "3,4,3,1,2") ;=> [3 4 3 1 2]
+  (numbers "x=-2,7 y=5,-1")  ;=> (-2 7 5 -1)
+  (line->vector "2,7,1,8,2") ;=> [2 7 1 8 2]
 
   ;; Trap: CSV keeps the space after a comma, so parse-long gives up.
   (csv/read-csv "1, 2")      ;=> (["1" " 2"])

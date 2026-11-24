@@ -25,8 +25,8 @@
   (is (= '(["x" "y"] ["1" "2"] ["3" "4"]) (csv/read-csv "x,y\n1,2\n3,4")))
   (is (= '({:x "1" :y "2"} {:x "3" :y "4"}) (hjc/csv->maps "x,y\n1,2\n3,4")))
   (is (= '({:name "Smith, Ada" :score "3"}) (hjc/csv->maps "name,score\n\"Smith, Ada\",3")))
-  (is (= '(0 4 3 -3) (hjc/numbers "p=0,4 v=3,-3")))
-  (is (= [3 4 3 1 2] (hjc/line->vector "3,4,3,1,2")))
+  (is (= '(-2 7 5 -1) (hjc/numbers "x=-2,7 y=5,-1")))
+  (is (= [2 7 1 8 2] (hjc/line->vector "2,7,1,8,2")))
   (is (= '(["1" " 2"]) (csv/read-csv "1, 2")) "the trap the how-to warns about")
   (is (nil? (parse-long " 2"))))
 
