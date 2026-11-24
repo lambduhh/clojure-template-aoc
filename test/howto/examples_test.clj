@@ -78,7 +78,7 @@
          "Execution error (NullPointerException) at howto.errors/total (errors.clj:13)."))))
 
 (deftest channels
-  (is (= [3 5 7] (howto.channels/run-chain [inc #(* 2 %) dec] [1 2 3]))))
+  (is (= [3 5 7] (howto.channels/run-chain [inc (fn [x] (* 2 x)) dec] [1 2 3]))))
 
 (deftest graphs
   (is (= {:a 0 :b 1 :c 1 :d 2} (howto.graphs/bfs-distances :a {:a [:b :c] :b [:d] :c [:d] :d []})))

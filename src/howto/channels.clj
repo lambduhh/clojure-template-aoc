@@ -15,12 +15,12 @@
 (defn run-chain
   "Feed `xs` through machines built from `fs`, in order; return the outputs."
   [fs xs]
-  (let [chans (vec (repeatedly (inc (count fs)) #(a/chan 10)))]
+  (let [chans (vec (repeatedly (inc (count fs)) (fn [] (a/chan 10))))]
     (doseq [[i f] (map-indexed vector fs)]
       (machine f (chans i) (chans (inc i))))
     (a/onto-chan!! (first chans) xs)
     (a/<!! (a/into [] (peek chans)))))
 
 (comment
-  (run-chain [inc #(* 2 %) dec] [1 2 3]) ;=> [3 5 7]
+  (run-chain [inc (fn [x] (* 2 x)) dec] [1 2 3]) ;=> [3 5 7]
   )
