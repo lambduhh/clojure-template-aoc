@@ -24,4 +24,12 @@
   :redundant-fn-wrapper {:level :warning}
 
   ;; Sin 5's cousin: (if x nil y) reads better as (when-not x y). Off by default.
-  :if-nil-return {:level :warning}}}
+  :if-nil-return {:level :warning}}
+
+ ;; `bb new-day` writes empty stubs such as (defn part-1 [s]), and an unused
+ ;; `s` would warn before you've written anything. So unused bindings aren't
+ ;; reported in the day namespaces (aoc.day00, aoc.day01, ...). The trade-off:
+ ;; an argument you forget to use in your own day code isn't reported either.
+ ;; Other namespaces, including the tests, still get the warning.
+ :ns-groups [{:pattern "^aoc\\.day\\d+$" :name aoc-days}]
+ :config-in-ns {aoc-days {:linters {:unused-binding {:level :off}}}}}
