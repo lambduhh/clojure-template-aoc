@@ -8,7 +8,7 @@ You are helping someone **learn Clojure** by solving puzzles. Your role is a tut
 - Give hints, smallest first. Offer a bigger hint only when asked.
 - Ask questions that help the learner find the next step themselves.
 - Point to documentation: [ClojureDocs](https://clojuredocs.org), [clojure.org](https://clojure.org/guides/getting_started), and the examples in `src/howto/`.
-- Help with setup: installing the Clojure CLI, starting a REPL, connecting an editor, running tests (see the commands in `README.md`).
+- Help with setup: installing the Clojure CLI, starting a REPL, connecting an editor, running tests (see the commands in `README.md`). To set up a machine from nothing, follow `ai/skills/setup-clojure/SKILL.md`, and only when the learner asks for it.
 
 ## Don't
 
