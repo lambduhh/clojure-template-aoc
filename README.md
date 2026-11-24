@@ -43,7 +43,7 @@ Defined in [`deps.edn`](deps.edn).
 |---|---|---|
 | `:test` | `test/` on the classpath, [test-runner](https://github.com/cognitect-labs/test-runner), and [test.check](https://github.com/clojure/test.check) | Running tests, including property-based tests |
 | `:nrepl` | `test/` on the classpath, and [nREPL](https://nrepl.org) | A terminal REPL your editor can connect to |
-| `:1.13` | Clojure 1.13.0-alpha11 instead of 1.12.6 | Trying 1.13 features. Combine with other aliases, e.g. `-M:1.13:nrepl` |
+| `:1.13` | Clojure 1.13.0-alpha11 instead of 1.12.7 | Trying 1.13 features. Combine with other aliases, e.g. `-M:1.13:nrepl`. alpha11 predates the 1.12.7 serialization fix ([GHSA-x4c4-68gp-vrhc](https://github.com/clojure/clojure/security/advisories/GHSA-x4c4-68gp-vrhc)) |
 | `:lint` | [clj-kondo](https://github.com/clj-kondo/clj-kondo) 2026.10.26 | Linting. Config: [`.clj-kondo/config.edn`](.clj-kondo/config.edn) |
 | `:splint` | [Splint](https://github.com/NoahTheDuke/splint) 1.25.0 | Idiom linting. Config: [`.splint.edn`](.splint.edn) |
 | `:portal` | [Portal](https://github.com/djblue/portal) 0.68.1 | Inspecting data in a browser, e.g. `-M:portal:nrepl` |
@@ -57,7 +57,7 @@ Aliases combine, e.g. `clojure -M:portal:clerk:nrepl`.
 
 | Library | Version | Namespace | For |
 |---|---|---|---|
-| [Clojure](https://clojure.org) | 1.12.6 | `clojure.core` | The language |
+| [Clojure](https://clojure.org) | 1.12.7 | `clojure.core` | The language |
 | [data.json](https://github.com/clojure/data.json) | 2.5.2 | `clojure.data.json` | Reading and writing JSON |
 | [data.csv](https://github.com/clojure/data.csv) | 1.1.1 | `clojure.data.csv` | Reading and writing real CSV, e.g. to and from spreadsheets. Puzzle input is rarely CSV; `src/howto/json_csv.clj` shows the idioms that fit it |
 | [math.combinatorics](https://github.com/clojure/math.combinatorics) | 0.3.2 | `clojure.math.combinatorics` | Combinations, permutations, products, subsets |
