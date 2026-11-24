@@ -80,7 +80,8 @@ inputs/                your puzzle inputs (git-ignored; see below)
 src/aoc/input.clj      reads inputs/dayNN.txt
 src/aoc/day00.clj      a made-up example day: example, parse, part-1, part-2
 src/howto/             one namespace per how-to (JSON and CSV, combinatorics, shortest paths, Datomic,
-                       parsing with instaparse, hashing, core.async channels, graphs)
+                       parsing with instaparse, hashing, core.async channels, graphs,
+                       reading an error)
 flow/, flow-test/      the core.async.flow how-to and its test (:flow alias only)
 test/                  tests; test/howto/ checks every result shown in src/howto/
 lint-fixtures/         deliberately sinful code that `bb sins` lints (not on the classpath)
