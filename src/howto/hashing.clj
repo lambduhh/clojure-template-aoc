@@ -16,7 +16,7 @@
   "The same MD5 as a hex string, using Java's MessageDigest directly."
   [^String s]
   (let [digest-bytes (.digest (java.security.MessageDigest/getInstance "MD5") (.getBytes s "UTF-8"))]
-    (str/join (map #(format "%02x" (bit-and % 0xff)) digest-bytes))))
+    (str/join (map (fn [b] (format "%02x" (bit-and b 0xff))) digest-bytes))))
 
 (comment
   (md5-with-java "abc") ;=> "900150983cd24fb0d6963f7d28e17f72"

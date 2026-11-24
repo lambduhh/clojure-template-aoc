@@ -44,7 +44,7 @@
   "CSV text with a header row -> a seq of maps with keyword keys."
   [s]
   (let [[header & rows] (csv/read-csv s)]
-    (map #(zipmap (map keyword header) %) rows)))
+    (map (fn [row] (zipmap (map keyword header) row)) rows)))
 
 (comment
   (csv->maps "name,score\n\"Smith, Ada\",3") ;=> ({:name "Smith, Ada", :score "3"})
