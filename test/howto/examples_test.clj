@@ -4,6 +4,7 @@
   (:require [aoc.day00 :as day00]
             [clj-commons.digest]
             [howto.channels]
+            [howto.errors]
             [howto.graphs]
             [loom.alg]
             [loom.graph]
@@ -12,6 +13,8 @@
             [instaparse.core]
             [clojure.data.csv :as csv]
             [clojure.data.json :as json]
+            [clojure.main]
+            [clojure.string]
             [clojure.math.combinatorics :as combo]
             [clojure.test :refer [deftest is]]
             [datomic.client.api :as d]
@@ -56,6 +59,23 @@
   (is (= "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad" (clj-commons.digest/sha-256 "abc")))
   (is (= (clj-commons.digest/md5 "abc") (howto.hashing/md5-with-java "abc"))
       "the library and Java's MessageDigest agree"))
+
+(deftest errors
+  (is (= 6 (howto.errors/total "1\n2\n3")))
+  (is (= '(1 2 nil 3) (map parse-long (clojure.string/split-lines "1\n2\n\n3"))))
+  ;; The Java message text varies by JDK, so check only what the how-to
+  ;; teaches from: the class, the phase, and the function ex-triage blames.
+  ;; Throwable->map records the class as a symbol, not a Class.
+  (let [triage (-> (try (howto.errors/total "1\n2\n\n3") (catch NullPointerException e e))
+                   Throwable->map
+                   clojure.main/ex-triage)]
+    (is (= #:clojure.error{:class 'java.lang.NullPointerException
+                           :phase :execution
+                           :symbol 'howto.errors/total}
+           (select-keys triage [:clojure.error/class :clojure.error/phase :clojure.error/symbol])))
+    (is (clojure.string/starts-with?
+         (clojure.main/ex-str triage)
+         "Execution error (NullPointerException) at howto.errors/total (errors.clj:13)."))))
 
 (deftest channels
   (is (= [3 5 7] (howto.channels/run-chain [inc #(* 2 %) dec] [1 2 3]))))
