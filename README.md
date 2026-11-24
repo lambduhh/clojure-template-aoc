@@ -120,6 +120,8 @@ Twelve common mistakes in Clojure code, and what catches them. A linter catches 
 
 `bb sins` lints [`lint-fixtures/twelve_sins.clj`](lint-fixtures/twelve_sins.clj), which commits the sins a linter can see, and fails if any expected warning is missing.
 
+**One check is turned off.** clj-kondo's `unused-binding` warning (an argument or `let` name you never use) is off in the day namespaces: `aoc.day00`, `aoc.day01`, and so on. That's because `bb new-day` writes empty stubs such as `(defn part-1 [s])`, so every new day would start with two warnings before you'd written anything. The trade-off is that an argument you forget to use in your own day code isn't reported either. The how-tos, the tests and everything else still get the warning. The setting is the `:ns-groups` and `:config-in-ns` entries in [`.clj-kondo/config.edn`](.clj-kondo/config.edn). To turn the check back on, delete them.
+
 ## Known warnings
 
 On newer JVMs, Datomic Local prints `WARNING: A terminally deprecated method in sun.misc.Unsafe has been called`. It comes from one of its dependencies (caffeine) and is harmless.
