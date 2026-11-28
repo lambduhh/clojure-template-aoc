@@ -1,12 +1,15 @@
 (ns howto.parsing
   "How to parse structured puzzle input with an instaparse grammar.
-  The input format here is made up."
+  The input format here is made up.
+
+  Further reading: https://github.com/Engelberg/instaparse"
   (:require [instaparse.core :as insta]))
 
 ;; Lines like "move 3 from A to B" or "swap A B".
+;; Input files usually end with a newline (slurp-day keeps it), so allow one.
 (def grammar
   (insta/parser
-   "instructions = instruction (<'\n'> instruction)*
+   "instructions = instruction (<'\n'> instruction)* <'\n'>?
     instruction  = move | swap
     move         = <'move '> number <' from '> stack <' to '> stack
     swap         = <'swap '> stack <' '> stack
@@ -27,6 +30,10 @@
 
 (comment
   (parse "move 3 from A to B\nswap A C")
+  ;=> [{:op :move, :n 3, :from "A", :to "B"} {:op :swap, :a "A", :b "C"}]
+
+  ;; A trailing newline, as at the end of an input file, is fine:
+  (parse "move 3 from A to B\nswap A C\n")
   ;=> [{:op :move, :n 3, :from "A", :to "B"} {:op :swap, :a "A", :b "C"}]
 
   ;; Bad input returns a failure object instead of throwing:

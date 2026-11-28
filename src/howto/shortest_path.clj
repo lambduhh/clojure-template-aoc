@@ -1,10 +1,14 @@
 (ns howto.shortest-path
-  "How to find shortest paths with a priority queue (Dijkstra's algorithm)."
+  "How to find shortest paths with a priority queue (Dijkstra's algorithm).
+
+  Further reading: https://github.com/clojure/data.priority-map"
   (:require [clojure.data.priority-map :refer [priority-map]]))
 
 (defn dijkstra
   "Cheapest cost from `start` to every reachable node.
-  `neighbors` is a function: node -> seq of [next-node step-cost]."
+  `neighbors` is a function: node -> seq of [next-node step-cost].
+  Step costs must be zero or more: Dijkstra's algorithm can give wrong answers
+  when a step can be negative."
   [start neighbors]
   (loop [frontier (priority-map start 0)
          done     {}]
@@ -13,7 +17,7 @@
             frontier (reduce (fn [f [nxt step]]
                                (let [c (+ cost step)]
                                  (if (or (contains? done nxt)
-                                         (<= (get f nxt Long/MAX_VALUE) c))
+                                         (<= (get f nxt ##Inf) c))
                                    f
                                    (assoc f nxt c))))
                              (pop frontier)

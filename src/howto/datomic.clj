@@ -1,15 +1,22 @@
 (ns howto.datomic
   "How to load puzzle data into an in-memory Datomic database and query it
-  with Datalog. Uses aoc.day00's made-up example."
+  with Datalog. Uses aoc.day00's made-up example.
+
+  Further reading: https://docs.datomic.com/operation/datomic-local.html
+  and https://docs.datomic.com/client-api/datomic.client.api.html"
   (:require [aoc.day00 :as day00]
             [datomic.client.api :as d]))
 
 (defn mem-conn
-  "A connection to a fresh in-memory database. Nothing is written to disk."
+  "A connection to a fresh, empty in-memory database. Nothing is written to
+  disk."
   [db-name]
   (let [client (d/client {:server-type :datomic-local
                           :storage-dir :mem
                           :system      "aoc"})]
+    ;; Delete any database an earlier call left under this name, so
+    ;; re-running the example starts from empty instead of adding to it.
+    (d/delete-database client {:db-name db-name})
     (d/create-database client {:db-name db-name})
     (d/connect client {:db-name db-name})))
 
@@ -25,6 +32,8 @@
   (for [{player :name score :score} entries]
     {:score/name player :score/points score}))
 
+;; :with ?e keeps equal scores from merging into one before sum adds them.
+;; See https://docs.datomic.com/query/query-data-reference.html#with
 (def totals-query
   '[:find ?name (sum ?points)
     :with ?e
