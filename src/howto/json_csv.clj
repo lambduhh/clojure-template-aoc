@@ -20,15 +20,17 @@
   (map parse-long (re-seq #"-?\d+" line)))
 
 (defn line->vector
-  "Read a comma-separated line of integers into a vector."
+  "Read a comma-separated line of integers into a vector. Spaces around a
+  number are trimmed first, because parse-long returns nil for \" 2\"."
   [line]
-  (mapv parse-long (str/split line #",")))
+  (mapv (fn [s] (parse-long (str/trim s))) (str/split line #",")))
 
 (comment
   (numbers "x=-2,7 y=5,-1")  ;=> (-2 7 5 -1)
   ;; A dash between numbers reads as a minus sign. For ranges, use #"\d+".
   (numbers "3-5")            ;=> (3 -5)
   (line->vector "2,7,1,8,2") ;=> [2 7 1 8 2]
+  (line->vector "1, 2")      ;=> [1 2]
   ;; parse-long reads leading zeros as decimal. (clojure.edn/read-string
   ;; would read 010 as octal 8, and throw on 08.)
   (line->vector "010,08")    ;=> [10 8]

@@ -32,6 +32,7 @@
   (is (= '(3 -5) (hjc/numbers "3-5")) "a dash reads as a minus sign")
   (is (= [2 7 1 8 2] (hjc/line->vector "2,7,1,8,2")))
   (is (= [10 8] (hjc/line->vector "010,08")) "leading zeros are decimal, not octal")
+  (is (= [1 2] (hjc/line->vector "1, 2")) "spaces after commas are trimmed")
   (is (= '(["1" " 2"]) (csv/read-csv "1, 2")) "the trap the how-to warns about")
   (is (nil? (parse-long " 2"))))
 
