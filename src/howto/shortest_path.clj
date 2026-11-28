@@ -43,3 +43,31 @@
 (comment
   ((dijkstra [0 0] (grid-neighbors example-grid)) [2 2]) ;=> 6
   )
+
+;; --- Brain teaser: "You’ve Been Promoted" ------------------------------------
+;; Puzzle 2 from Clojure Brain Teasers by Alex Miller and Lorilyn Jordan
+;; Miller (Pragmatic Bookshelf, 2025), used with permission. Copyright (c) 2025
+;; The Pragmatic Programmers, LLC. Not covered by this repo's licence.
+;; https://pragprog.com/titles/mmclobrain/clojure-brain-teasers/
+;; Guess each result before you evaluate it; the book's answers follow.
+(comment
+  (def bignum    9223372036854775807)
+
+  (def biggernum 9223372036854775808)
+
+  ;; Splint would suggest inc; the teaser is about + itself.
+  #_{:splint/disable [style/plus-one]}
+  (= biggernum (+ bignum 1))
+  ;; Execution error (ArithmeticException) at java.lang.Math/addExact
+  ;; long overflow
+
+  (= biggernum (+' bignum 1))
+  ;=> true
+
+  (= biggernum (unchecked-add bignum 1))
+  ;=> false
+
+  ;; Why: + throws on long overflow, +' promotes to a BigInt, and unchecked-add
+  ;; wraps around to Long/MIN_VALUE. dijkstra uses ##Inf, not
+  ;; Long/MAX_VALUE, for unknown distances partly for this reason.
+  )

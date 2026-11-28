@@ -62,3 +62,22 @@
 (comment
   (csv->maps "name,score\n\"Smith, Ada\",3") ;=> ({:name "Smith, Ada", :score "3"})
   )
+
+;; --- Brain teaser: "Banana Splits" -------------------------------------------
+;; Puzzle 20 from Clojure Brain Teasers by Alex Miller and Lorilyn Jordan
+;; Miller (Pragmatic Bookshelf, 2025), used with permission. Copyright (c) 2025
+;; The Pragmatic Programmers, LLC. Not covered by this repo's licence.
+;; https://pragprog.com/titles/mmclobrain/clojure-brain-teasers/
+;; Guess each result before you evaluate it; the book's answers follow.
+(comment
+  ;; The book's version starts with (require '[clojure.string :as str]);
+  ;; this namespace already requires it.
+  (= (str/split "banana" #"an") ["b" "" "a"])
+  ;=> true
+
+  (= (str/split "banana" #"na") ["ba"])
+  ;=> true
+
+  ;; Why: split keeps empty strings between two matches, but drops the empty
+  ;; strings at the end, so "banana" split on #"na" is just ["ba"].
+  )

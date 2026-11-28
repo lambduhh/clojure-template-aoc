@@ -45,3 +45,20 @@
   ;; repeatedly take a step whose prerequisites are all done, choosing among
   ;; the ready steps by the puzzle's rule.
   )
+
+;; --- Brain teaser: "Needle in a Haystack" ------------------------------------
+;; Puzzle 9 from Clojure Brain Teasers by Alex Miller and Lorilyn Jordan
+;; Miller (Pragmatic Bookshelf, 2025), used with permission. Copyright (c) 2025
+;; The Pragmatic Programmers, LLC. Not covered by this repo's licence.
+;; https://pragprog.com/titles/mmclobrain/clojure-brain-teasers/
+;; Guess each result before you evaluate it; the book's answers follow.
+(comment
+  (def haystack
+    (shuffle (conj (range 100) :needle)))
+
+  (contains? haystack :needle)
+  ;=> false
+
+  ;; Why: contains? asks about keys, not values. A vector's keys are its indexes
+  ;; (0 to 100 here), so use (some #{:needle} haystack) to search the values.
+  )

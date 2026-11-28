@@ -12,3 +12,27 @@
   ;; Equal items count as copies of one item, so no result repeats:
   (combo/combinations [1 1 2] 2)          ;=> ((1 1) (1 2))
   )
+
+;; --- Brain teaser: "Build a Nest" --------------------------------------------
+;; Puzzle 22 from Clojure Brain Teasers by Alex Miller and Lorilyn Jordan
+;; Miller (Pragmatic Bookshelf, 2025), used with permission. Copyright (c) 2025
+;; The Pragmatic Programmers, LLC. Not covered by this repo's licence.
+;; https://pragprog.com/titles/mmclobrain/clojure-brain-teasers/
+;; Guess each result before you evaluate it; the book's answers follow.
+(comment
+  (def ex1
+    (for [a [0 1 2]
+          b [3 4 5]]
+       (* a b)))
+
+  (def ex2
+    (for [a [0 1 2]]
+      (for [b [3 4 5]]
+        (* a b))))
+
+  (= ex1 ex2)
+  ;=> false
+
+  ;; Why: Two bindings in one for give one flat sequence of 9 products. A for
+  ;; inside a for gives three sequences of 3.
+  )
