@@ -4,7 +4,7 @@ description: 'Set up a Clojure development environment for a learner (Java, the 
 user_invocable: true
 ---
 
-<!-- L3 (Human-verified): AI-drafted agent instructions; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. The edits of 2026-11-27 (Codespaces link, macOS `code` command label, Windows WSL editor steps, the Calva alias prompt, Linux man pages) are AI-drafted; Jordan Miller reviewed and corrected them on 2026-11-27 (PR #14). Remove this line when endorsed (L4). -->
+<!-- L3 (Human-verified): Agent instructions; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. Jordan Miller reviewed and corrected the edits of 2026-11-27 (Codespaces link, macOS `code` command label, Windows WSL editor steps, the Calva alias prompt, Linux man pages) in PR #14. Remove this line when endorsed (L4). -->
 
 # Set up Clojure, then explain it
 

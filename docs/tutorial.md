@@ -1,4 +1,4 @@
-<!-- DRAFT: AI-drafted tutorial; pending Jordan's review. Remove this line when endorsed. -->
+<!-- DRAFT: tutorial pending Jordan's review. Remove this line when endorsed. -->
 
 # Tutorial: from zero to your first passing test
 
