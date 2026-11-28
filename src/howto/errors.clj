@@ -49,3 +49,18 @@
   ;; Then find the nil: evaluate the inner expression on its own.
   (map parse-long (str/split-lines "1\n2\n\n3")) ;=> (1 2 nil 3)
   )
+
+;; --- Brain teaser: "Nil Comment" ---------------------------------------------
+;; Puzzle 13 from Clojure Brain Teasers by Alex Miller and L. Jordan
+;; Miller (Pragmatic Bookshelf, 2025).
+;; https://pragprog.com/titles/mmclobrain/clojure-brain-teasers/
+;; Guess each result before you evaluate it; the book's answers follow.
+(comment
+  (map inc [1 2 3 (comment 4) 5])
+  ;; Error printing return value (NullPointerException)
+  ;;   at clojure.lang.Numbers/ops (Numbers.java:1095).
+  ;; Cannot invoke "Object.getClass()" because "x" is null
+
+  ;; Why: (comment 4) evaluates to nil, so inc gets a nil: the same
+  ;; NullPointerException, with "x" is null, that this guide reads above.
+  )

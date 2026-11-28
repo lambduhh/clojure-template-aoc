@@ -16,7 +16,7 @@
             [clojure.main]
             [clojure.string]
             [clojure.math.combinatorics :as combo]
-            [clojure.test :refer [deftest is]]
+            [clojure.test :refer [deftest is testing]]
             [datomic.client.api :as d]
             [howto.datomic :as hd]
             [howto.json-csv :as hjc]
@@ -112,3 +112,27 @@
   (let [order (vec (loom.alg/topsort (loom.graph/digraph [:wake :coffee] [:coffee :code] [:wake :shower])))
         pos (zipmap order (range))]
     (is (every? (fn [[a b]] (< (pos a) (pos b))) [[:wake :coffee] [:coffee :code] [:wake :shower]]))))
+
+(deftest brain-teasers
+  ;; The Clojure Brain Teasers sections in src/howto/ print the book's
+  ;; answers. These pin them on this repo's Clojure version, so an upgrade
+  ;; that changes an answer fails here instead of leaving a guide wrong.
+  (testing "puzzle 13, errors.clj: (comment 4) is nil, and inc throws on it"
+    (is (thrown-with-msg? NullPointerException #"\"x\" is null"
+                          (doall (map inc [1 2 3 (comment 4) 5])))))
+  (testing "puzzle 20, json_csv.clj"
+    (is (= (clojure.string/split "banana" #"an") ["b" "" "a"]))
+    (is (= (clojure.string/split "banana" #"na") ["ba"])))
+  (testing "puzzle 22, combinatorics.clj"
+    (is (not= (for [a [0 1 2] b [3 4 5]] (* a b))
+              (for [a [0 1 2]] (for [b [3 4 5]] (* a b))))))
+  (testing "puzzle 9, graphs.clj"
+    (let [haystack (shuffle (conj (range 100) :needle))]
+      (is (false? (contains? haystack :needle)))
+      (is (= :needle (some #{:needle} haystack)))))
+  (testing "puzzle 2, shortest_path.clj"
+    (let [bignum 9223372036854775807 biggernum 9223372036854775808]
+      (is (thrown? ArithmeticException #_{:splint/disable [style/plus-one]} (+ bignum 1)))
+      (is (= biggernum (+' bignum 1)))
+      (is (not= biggernum (unchecked-add bignum 1)))
+      (is (= Long/MIN_VALUE (unchecked-add bignum 1))))))
