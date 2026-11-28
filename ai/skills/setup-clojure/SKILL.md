@@ -4,7 +4,7 @@ description: 'Set up a Clojure development environment for a learner (Java, the 
 user_invocable: true
 ---
 
-<!-- L3 (Human-verified): AI-drafted agent instructions; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. Remove this line when endorsed (L4). -->
+<!-- L3 (Human-verified): Agent instructions; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. Jordan Miller reviewed and corrected the edits of 2026-11-27 (Codespaces link, macOS `code` command label, Windows WSL editor steps, the Calva alias prompt, Linux man pages) in PR #14. Remove this line when endorsed (L4). -->
 
 # Set up Clojure, then explain it
 
@@ -67,7 +67,7 @@ On **Windows without WSL**, skip Step 1, whose commands need a POSIX shell. Reco
 
 ### No-install alternative: Codespaces
 
-[Codespaces](https://docs.github.com/en/codespaces/overview) needs no installs:
+[Codespaces](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces) needs no installs:
 1. The learner clicks **Use this template** on GitHub to make their own copy.
 2. On their copy, they choose **Code → Codespaces → Create codespace**.
 
@@ -129,7 +129,7 @@ Explain first: *The Clojure CLI gives you the `clojure` and `clj` commands. It r
     sudo ./linux-install.sh
     ```
 
-  - You may run the download and `chmod` after asking. The learner runs the `sudo` line. Explain that it creates `/usr/local/bin/clj`, `/usr/local/bin/clojure` and the directory `/usr/local/lib/clojure`, and offer to show the script first.
+  - You may run the download and `chmod` after asking. The learner runs the `sudo` line. Explain that it creates `/usr/local/bin/clj`, `/usr/local/bin/clojure`, the directory `/usr/local/lib/clojure`, and man pages in `/usr/local/share/man/man1`, and offer to show the script first.
 
 ## Step 4: Babashka
 
@@ -153,7 +153,8 @@ Explain first: *Babashka is "a native Clojure interpreter for scripting with fas
 
 - **VS Code:**
   - Install Calva with `code --install-extension betterthantomorrow.calva` (the ID the template's devcontainer uses).
-  - If `code` isn't found on macOS, they can run **Shell Command: Install 'code' command in PATH** from VS Code's Command Palette, or install Calva from the Extensions view.
+  - If `code` isn't found on macOS, they can open VS Code's Command Palette, type `shell command`, and run **Shell Command: Install 'code' and optionally 'copilot' commands in PATH** ([VS Code docs](https://code.visualstudio.com/docs/setup/mac)). If it offers to install the Copilot CLI too, they can decline; this setup doesn't need it. Or they can install Calva from the Extensions view.
+  - **Windows with WSL:** the tools are inside WSL, so VS Code has to work there too. The learner installs VS Code on Windows and its [WSL extension](https://code.visualstudio.com/docs/remote/wsl), clones the repository inside WSL, and runs `code .` from the WSL shell in the repo folder. In the VS Code window that opens, they install Calva, which then runs inside WSL ([Calva's WSL page](https://calva.io/wsl/)).
   - Explain: *[Calva](https://calva.io) connects VS Code to a running Clojure REPL, so you can evaluate code from the editor and see results inline.*
 - **Another editor:** point to clojure.org's [Editors guide](https://clojure.org/guides/editors) for a Clojure plugin. Help them install it only if they ask, step by step.
 
@@ -178,7 +179,7 @@ bb test                    # should end with: 0 failures, 0 errors.
 - **A harmless warning on newer Java:** Datomic Local may print `WARNING: A terminally deprecated method in sun.misc.Unsafe has been called`. The README's "Known warnings" section says it's harmless.
 
 Finally, have them start a REPL:
-- in Calva: **Calva: Start a Project REPL and Connect (aka Jack-In)**, choosing `deps.edn`;
+- in Calva: **Calva: Start a Project REPL and Connect (aka Jack-In)**, choosing `deps.edn`. When Calva asks them to "Pick any aliases to launch with", they leave them all unticked and press Enter. An alias with `:main-opts` must start an nREPL server itself, or Calva has nothing to connect to; `:test`, for example, runs the test runner instead ([Calva's Jack-in docs](https://calva.io/connect/)). Calva remembers the choice for next time;
 - or in a terminal: `bb repl`.
 
 They should evaluate `(+ 1 2)`, which gives `3`.
@@ -190,7 +191,7 @@ This step is the point. Give a short summary table with one row per tool you ins
 | Tool | What it is | Why Clojure needs it | Where it is | Update | Remove |
 |---|---|---|---|---|---|
 | [Java](https://adoptium.net/temurin/releases/) (Temurin, or their JDK) | The JVM that Clojure runs on | Clojure compiles to JVM bytecode and calls Java libraries directly | macOS: `/usr/libexec/java_home -V`. Linux: `readlink -f "$(command -v java)"` | e.g. `brew upgrade --cask temurin@25`, or their package manager | e.g. `brew uninstall --cask temurin@25`, or their package manager |
-| [Clojure CLI](https://clojure.org/guides/install_clojure) | `clojure` and `clj` | Reads `deps.edn`, fetches libraries, starts Clojure with the right classpath | `command -v clojure` | `brew upgrade clojure/tools/clojure`, or re-run the Linux script | macOS: `brew uninstall clojure/tools/clojure`. Linux script: no uninstaller; delete `/usr/local/bin/clj`, `/usr/local/bin/clojure` and `/usr/local/lib/clojure` (needs `sudo`; the learner runs it, after asking) |
+| [Clojure CLI](https://clojure.org/guides/install_clojure) | `clojure` and `clj` | Reads `deps.edn`, fetches libraries, starts Clojure with the right classpath | `command -v clojure` | `brew upgrade clojure/tools/clojure`, or re-run the Linux script | macOS: `brew uninstall clojure/tools/clojure`. Linux script: no uninstaller; delete `/usr/local/bin/clj`, `/usr/local/bin/clojure`, `/usr/local/lib/clojure`, and the man pages `/usr/local/share/man/man1/clojure.1` and `/usr/local/share/man/man1/clj.1` (needs `sudo`; the learner runs it, after asking) |
 | [Babashka](https://github.com/babashka/babashka) | `bb`, a fast-starting Clojure interpreter | Runs the template's tasks in [`bb.edn`](../../../bb.edn) | `command -v bb` | `brew upgrade babashka`, or re-run the installer | `brew uninstall babashka`, or delete the `bb` binary |
 | [Calva](https://calva.io) | The VS Code extension | Connects the editor to the REPL | VS Code's Extensions view | Automatic, by default | Uninstall from the Extensions view |
 
