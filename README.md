@@ -4,7 +4,7 @@ A starter Clojure project with a REPL, tests, and the libraries puzzle solving u
 
 Clojure is a power tool for evolving systems, and each Advent of Code day is a small evolving system: part 2 usually changes the question part 1 asked. The setup here supports that loop. A REPL stays running, your data is there to look at, and a test tells you whether part 1 still holds after you change things for part 2.
 
-This README is a **reference**. For a guided start, see the [tutorial](docs/tutorial.md).
+This README is a **reference**. For a guided start, see the [tutorial](docs/tutorial.md). New to setting up Clojure? Start with the [setup flowchart](docs/setup-flowchart.md).
 
 ## Requirements
 
@@ -15,11 +15,11 @@ This README is a **reference**. For a guided start, see the [tutorial](docs/tuto
 | [Babashka](https://babashka.org) | any recent | Optional; runs the `bb` tasks below |
 | Editor | any | [Calva](https://calva.io) for VS Code is preinstalled in the devcontainer |
 
-Or skip installing: open the repo in a [devcontainer or GitHub Codespace](#devcontainer).
+Or skip installing: open the repo in a [devcontainer or GitHub Codespace](#devcontainer). If you're new to installing these tools, the [setup flowchart](docs/setup-flowchart.md) walks through each one.
 
 ## Commands
 
-Run from the repo root. Each `bb` task has a plain `clojure` equivalent.
+Run from the repo root. Most `bb` tasks have a plain `clojure` equivalent; `bb sins` and `bb new-day` don't.
 
 | Command | Equivalent | What it does |
 |---|---|---|
@@ -69,15 +69,16 @@ Aliases combine, e.g. `clojure -M:portal:clerk:nrepl`.
 | [Medley](https://github.com/weavejester/medley) | 1.10.0 | `medley.core` | Small utility functions missing from `clojure.core` |
 | [instaparse](https://github.com/Engelberg/instaparse) | 1.5.0 | `instaparse.core` | Parsing input with a grammar |
 | [core.async](https://github.com/clojure/core.async) | 1.9.865 | `clojure.core.async` | Channels and processes. `core.async.flow` needs the `:flow` alias |
-| [loom](https://github.com/aysylu/loom) | 1.2.4 | `loom.graph`, `loom.alg` | Graph algorithms: paths, connected components, topological sort, cliques, max flow. Excludes `tailrecursion/cljs-priority-map`, which only ClojureScript needs. `src/howto/graphs.clj` also shows BFS by hand |
+| [loom](https://github.com/clj-commons/loom) | 1.2.4 | `loom.graph`, `loom.alg` | Graph algorithms: paths, connected components, topological sort, cliques, max flow. Excludes `tailrecursion/cljs-priority-map`, which only ClojureScript needs. `src/howto/graphs.clj` also shows BFS by hand |
 | [digest](https://github.com/clj-commons/digest) | 1.4.100 | `clj-commons.digest` | MD5, SHA and other hashes as plain functions. Java's built-in `java.security.MessageDigest` does the same with interop; `src/howto/hashing.clj` shows both |
-| [Datomic Local](https://docs.datomic.com/datomic-local.html) | 1.0.301 | `datomic.client.api` | A Datalog database, in memory or on disk. Free; binaries are Apache 2.0 |
+| [Datomic Local](https://docs.datomic.com/operation/datomic-local.html) | 1.0.301 | `datomic.client.api` | A Datalog database, in memory or on disk. Free; binaries are Apache 2.0 |
 
 ## Layout
 
 ```
 deps.edn               dependencies and aliases
 bb.edn                 babashka tasks
+docs/                  the setup flowchart and the tutorial
 inputs/                your puzzle inputs (git-ignored; see below)
 src/aoc/input.clj      reads inputs/dayNN.txt
 src/aoc/day00.clj      a made-up example day: example, parse, part-1, part-2
@@ -96,11 +97,11 @@ AGENTS.md              symlink to ai/AGENTS.md, so agents find it
 
 Save each day's input as `inputs/dayNN.txt`, e.g. `inputs/day01.txt`. Read it with `(aoc.input/slurp-day 1)`.
 
-`inputs/` is git-ignored except for `.gitkeep`. Advent of Code asks that repositories not include puzzle text or inputs ([FAQ](https://adventofcode.com/2025/about)).
+`inputs/` is git-ignored except for `.gitkeep`. Advent of Code asks that repositories not include puzzle text or inputs ([FAQ](https://adventofcode.com/2026/about)).
 
 ## Devcontainer
 
-[`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json) uses the `mcr.microsoft.com/devcontainers/java:1-21` image, installs the Clojure CLI and Babashka, downloads the dependencies, and adds Calva. In GitHub, use **Code → Codespaces → Create codespace**.
+[`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json) uses the `mcr.microsoft.com/devcontainers/java:1-21` image, installs the Clojure CLI and Babashka, downloads the dependencies, and adds Calva. In GitHub, click **Use this template → Open in a codespace**, or make your copy first and use **Code → Codespaces → Create codespace** on it.
 
 ## Code review
 

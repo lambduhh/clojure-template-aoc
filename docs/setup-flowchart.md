@@ -1,4 +1,4 @@
-<!-- L3 (Human-verified): AI-drafted onboarding flowchart; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. The second sentence of the introduction ("Each situation…") was added later on 2026-11-24, is AI-drafted, and has not been reviewed. Remove this line when endorsed (L4). -->
+<!-- L3 (Human-verified): AI-drafted onboarding flowchart; Jordan Miller verified its install commands and claims against clojure.org's Install Clojure guide and the Babashka README on 2026-11-24. The second sentence of the introduction ("Each situation…") was added later on 2026-11-24, is AI-drafted, and has not been reviewed. The edits of 2026-11-27 (Codespaces setup wait and free use, Clojure Camp mob sessions, video links, Adoptium Linux guide, WSL editor steps, clj-msi, Calva getting-started link and alias prompt, Linux man pages) are AI-drafted and have not been reviewed. Remove this line when endorsed (L4). -->
 
 # Set up Clojure: a flowchart
 
@@ -9,7 +9,7 @@ Brand new to Clojure? Follow the arrows. Each situation has one recommended rout
 - **Babashka.** This template's README calls it optional, but the tutorial uses its `bb` commands, and `bb new-day` has no plain-`clojure` equivalent. Install it too.
 - **An editor.**
 
-If you'd rather install nothing, use [Codespaces](https://docs.github.com/en/codespaces/overview) ([step 2](#2-install-or-not)).
+If you'd rather install nothing, use [Codespaces](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces) ([step 2](#2-install-or-not)).
 
 Each install command here comes from clojure.org's [Install Clojure](https://clojure.org/guides/install_clojure) guide or the [Babashka README](https://github.com/babashka/babashka#installation). If a command fails, those pages are the authority. These commands were compared with those pages on 2026-11-24, not run on every system.
 
@@ -52,20 +52,23 @@ The same path as steps, with the commands:
 
 ## 1. New to programming?
 
-Start with [Clojure Camp](https://handbook.clojure.camp): its handbook, and its [mob sessions](https://github.com/clojure-camp/wiki/blob/main/initiatives/mob-sessions.md), which run in the [Clojure Camp Discord](https://discord.clojure.camp). Then come back here.
+Start with [Clojure Camp](https://handbook.clojure.camp): its handbook, and its [mob sessions](https://github.com/clojure-camp/wiki/blob/main/initiatives/mob-sessions.md), which are scheduled on [Meetup](https://www.meetup.com/clojure-camp/) and announced in the [Clojure Camp Discord](https://discord.clojure.camp). Then come back here.
 
 ## 2. Install, or not?
 
-**Don't want to install anything, or on a work laptop?** Use [Codespaces](https://docs.github.com/en/codespaces/overview), if your employer or school allows it.
+**Don't want to install anything, or on a work laptop?** Use [Codespaces](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces), if your employer or school allows it.
 1. Click **Use this template** on GitHub to make your own copy.
 2. On your copy, choose **Code → Codespaces → Create codespace**. It installs Java, the Clojure CLI, Babashka and [Calva](https://calva.io) for you.
-3. Then go to [step 6](#6-start-the-repl) and start the REPL.
+3. Wait for the setup to finish. After the codespace opens, its setup command (`postCreateCommand` in [`devcontainer.json`](../.devcontainer/devcontainer.json)) may still be running in a terminal. It installs the Clojure CLI, downloads the libraries, then installs Babashka. Until it ends, `clojure` or `bb` may not be found.
+4. Then go to [step 6](#6-start-the-repl) and start the REPL.
+
+Personal GitHub accounts include some free Codespaces use each month; see GitHub's [Codespaces billing](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces) page.
 
 Otherwise, go to the steps for your operating system.
 
 ## 3. Install Java, the Clojure CLI and Babashka
 
-Prefer a video? The Clojure team's [Zero to REPL](https://clojure.org/news/2026/03/30/zero_to_repl) videos on [ClojureTV](https://www.youtube.com/@ClojureTV) walk through this for your system. They cover Java, the Clojure CLI and Calva, but not Babashka:
+Prefer a video? The Clojure team's Zero to REPL videos on [ClojureTV](https://www.youtube.com/@ClojureTV) walk through this for your system ([clojure.org's announcement](https://clojure.org/news/2026/03/30/zero_to_repl) shows the macOS one). They cover Java, the Clojure CLI and Calva, but not Babashka:
 - [macOS](https://www.youtube.com/watch?v=huGyv5yLIM8)
 - [Linux](https://www.youtube.com/watch?v=544xOAIg3y0)
 - [Windows (WSL)](https://www.youtube.com/watch?v=TQgzA3QLz-k)
@@ -92,7 +95,7 @@ brew install borkdude/brew/babashka
 
 ### Linux
 
-1. **Java.** Install Temurin 25 from [Adoptium's Temurin downloads](https://adoptium.net/temurin/releases/), or use your distribution's OpenJDK package, version 21 or newer. Clojure works with ["any Java distribution"](https://clojure.org/guides/install_clojure#java), and this template's README asks for Java 21 or newer. Afterwards, check that `java --version` works in a new terminal.
+1. **Java.** Install Temurin 25 from [Adoptium's Temurin downloads](https://adoptium.net/temurin/releases/) (Adoptium's [Linux install guide](https://adoptium.net/installation/linux/) has package-manager steps), or use your distribution's OpenJDK package, version 21 or newer. Clojure works with ["any Java distribution"](https://clojure.org/guides/install_clojure#java), and this template's README asks for Java 21 or newer. Afterwards, check that `java --version` works in a new terminal.
 2. **Clojure CLI.** It needs `bash`, `curl` and `rlwrap`; install them with your package manager if they're missing. Then download the installer into a temporary folder and run it:
 
    ```sh
@@ -102,7 +105,7 @@ brew install borkdude/brew/babashka
    sudo ./linux-install.sh
    ```
 
-   It uses `sudo` because it installs into `/usr/local`: `/usr/local/bin/clj`, `/usr/local/bin/clojure` and `/usr/local/lib/clojure`. You can read the script first with `less linux-install.sh`.
+   It uses `sudo` because it installs into `/usr/local`: `/usr/local/bin/clj`, `/usr/local/bin/clojure`, `/usr/local/lib/clojure`, and man pages in `/usr/local/share/man/man1`. You can read the script first with `less linux-install.sh`.
 3. **Babashka.** In the same temporary folder:
 
    ```sh
@@ -118,9 +121,9 @@ brew install borkdude/brew/babashka
 
 ### Windows
 
-- **With WSL (Windows Subsystem for Linux):** this is clojure.org's recommendation. [Install WSL](https://learn.microsoft.com/windows/wsl/install), open your Linux shell, and follow the Linux steps there. In [clojure.org's words](https://clojure.org/guides/install_clojure#_windows_subsystem_for_linux_wsl), WSL "will provide the closest match for most existing Clojure tutorials and documentation".
+- **With WSL (Windows Subsystem for Linux):** this is clojure.org's recommendation. [Install WSL](https://learn.microsoft.com/windows/wsl/install), open your Linux shell, and follow the Linux steps there. In [clojure.org's words](https://clojure.org/guides/install_clojure#_windows_subsystem_for_linux_wsl), WSL "will provide the closest match for most existing Clojure tutorials and documentation". The tools live inside WSL, so the editor has to work inside WSL too; [step 5](#5-pick-an-editor) covers that.
 - **Without WSL:** use Codespaces ([step 2](#2-install-or-not)).
-  - Other options: install Java, then [clj-msi](https://github.com/casselc/clj-msi) for the Clojure CLI (clojure.org's Windows installer).
+  - Other options: install Java, then [clj-msi](https://github.com/casselc/clj-msi) for the Clojure CLI (a community installer that clojure.org links to).
   - For Babashka, see the Windows section of the [Babashka README](https://github.com/babashka/babashka#windows). It uses scoop, which you install by running a script from get.scoop.sh.
 
 ## 4. Check all three
@@ -138,14 +141,15 @@ bb --version       # should print a version
 
 ## 5. Pick an editor
 
-- **No editor yet, or you use VS Code:** install [VS Code](https://code.visualstudio.com/), then the [Calva](https://calva.io) extension. In VS Code's Extensions view, search for "Calva".
+- **No editor yet, or you use VS Code:** install [VS Code](https://code.visualstudio.com/), then the [Calva](https://calva.io) extension. In VS Code's Extensions view, search for "Calva". Calva's [Getting Started](https://calva.io/getting-started/) page has more.
+- **On Windows with WSL:** install VS Code on Windows, then its [WSL extension](https://code.visualstudio.com/docs/remote/wsl). When you get this template in step 6, clone it inside WSL. Then, from the WSL shell in the repo folder, run `code .`. VS Code opens a window connected to WSL. Install Calva in that window, so it runs inside WSL ([Calva's WSL page](https://calva.io/wsl/)).
 - **You already use another editor:** find a Clojure plugin for it on clojure.org's [editors page](https://clojure.org/guides/editors).
 
 ## 6. Start the REPL
 
 If you're not in Codespaces, get this template: click **Use this template** on GitHub, or clone it. Then open the folder in your editor.
 
-- **In Calva:** open the Command Palette and run **Calva: Start a Project REPL and Connect (aka Jack-In)**. Choose `deps.edn`.
+- **In Calva:** open the Command Palette and run **Calva: Start a Project REPL and Connect (aka Jack-In)**. Choose `deps.edn`. Calva then asks you to "Pick any aliases to launch with": leave them all unticked and press <kbd>Enter</kbd>. Some aliases, such as `:test`, start another program, like the test runner, instead of a REPL ([Calva's Jack-in docs](https://calva.io/connect/)). Calva remembers what you pick for next time.
 - **In a terminal:** run `bb repl`, then use your editor's "connect to a running REPL" command.
 
 The first start downloads the template's libraries, so it can take a minute or more.
@@ -162,6 +166,6 @@ If you use an AI coding agent, it can do steps 3–5 with you and explain each o
 
 - **Java and the Clojure CLI:** clojure.org, [Install Clojure](https://clojure.org/guides/install_clojure).
 - **Babashka:** the [Babashka README](https://github.com/babashka/babashka#installation).
-- **The videos:** [Zero to REPL](https://clojure.org/news/2026/03/30/zero_to_repl), by the Clojure team, on [ClojureTV](https://www.youtube.com/@ClojureTV).
-- **Codespaces:** GitHub's [Codespaces overview](https://docs.github.com/en/codespaces/overview).
+- **The videos:** Zero to REPL, by the Clojure team, on [ClojureTV](https://www.youtube.com/@ClojureTV): [macOS](https://www.youtube.com/watch?v=huGyv5yLIM8) (announced on [clojure.org](https://clojure.org/news/2026/03/30/zero_to_repl)), [Linux](https://www.youtube.com/watch?v=544xOAIg3y0), [Windows (WSL)](https://www.youtube.com/watch?v=TQgzA3QLz-k).
+- **Codespaces:** GitHub's [What are GitHub Codespaces?](https://docs.github.com/en/codespaces/about-codespaces/what-are-codespaces)
 - **Editors:** clojure.org, [Editors](https://clojure.org/guides/editors).

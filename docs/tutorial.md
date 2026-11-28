@@ -10,15 +10,15 @@ You don't need to know any Clojure yet. When a command or a setting isn't explai
 
 ## 1. Get a working environment
 
-Pick **one** of these:
+Pick **one** of these. If you're new to installing developer tools, the [setup flowchart](setup-flowchart.md) walks through each option step by step.
 
-**A. No installs (Codespaces).** On GitHub, open this repository and choose **Code → Codespaces → Create codespace**. Wait for the setup to finish. It installs Java, the Clojure CLI, Babashka, and the [Calva](https://calva.io) editor extension. Then skip to [step 2](#2-start-a-repl-and-connect-your-editor).
+**A. No installs (Codespaces).** On GitHub, open this repository and choose **Use this template → Open in a codespace**. A codespace made this way isn't saved to a repository until you publish it. Or click **Use this template** to make your own copy first, then on your copy choose **Code → Codespaces → Create codespace**. Wait for the setup to finish. It installs Java, the Clojure CLI, Babashka, and the [Calva](https://calva.io) editor extension. Then skip to [step 2](#2-start-a-repl-and-connect-your-editor).
 
 **B. Install locally.** Install:
 
 1. Java 21 or newer.
 2. The [Clojure CLI](https://clojure.org/guides/install_clojure).
-3. [Babashka](https://babashka.org) (optional, but this tutorial uses its `bb` commands).
+3. [Babashka](https://babashka.org). This tutorial uses its `bb` commands, and `bb new-day` has no plain-`clojure` equivalent.
 4. An editor with Clojure support. If you use VS Code, install [Calva](https://calva.io).
 
 Check that everything works by running this from the repo root:
@@ -41,7 +41,7 @@ The **REPL** (Read–Eval–Print Loop) is a running Clojure program you send co
 
 Instead of writing a whole program, running it and waiting to find out what happened, you talk to the program while it runs: change one piece, evaluate it, and see the result straight away. That's where the focus comes from.
 
-In Calva, open the Command Palette and run **Calva: Start a Project REPL and Connect (aka Jack-In)**. Choose the `deps.edn` project type. Calva starts the REPL and connects to it.
+In Calva, open the Command Palette and run **Calva: Start a Project REPL and Connect (aka Jack-In)**. Choose the `deps.edn` project type. Calva then asks you to "Pick any aliases to launch with": leave them all unticked and press <kbd>Enter</kbd>. Some aliases, such as `:test`, start another program, like the test runner, instead of a REPL. Calva remembers what you pick for next time. Calva starts the REPL and connects to it.
 
 If you'd rather start the REPL yourself, or you use another editor:
 
@@ -64,7 +64,7 @@ Open [`src/aoc/day00.clj`](../src/aoc/day00.clj). It solves a made-up puzzle (it
 | `part-1`, `part-2` | Each takes the input string and returns an answer |
 | `(comment ...)` | A block the compiler ignores, holding expressions for you to evaluate one at a time |
 
-First load the file into the REPL. In Calva, run **Calva: Load/Evaluate Current File and its Requires/Dependencies**. Then go to the `comment` block at the bottom and evaluate each expression in it:
+First load the file into the REPL. In Calva, run **Calva: Load/Evaluate Current File and its Requires/Dependencies**. Then go to the `comment` block at the bottom and evaluate the first three expressions in it:
 
 ```clojure
 (parse example)
@@ -73,6 +73,8 @@ First load the file into the REPL. In Calva, run **Calva: Load/Evaluate Current 
 (part-1 example) ;=> 13
 (part-2 example) ;=> "alice"
 ```
+
+The last expression in the block, `(part-1 (input/slurp-day 0))`, reads `inputs/day00.txt`. The template doesn't include that file, so it throws `No input at inputs/day00.txt`. It's there to show how a real day reads its input, which [step 5](#5-use-your-real-puzzle-input) covers.
 
 You can also call the helper functions `part-1` and `part-2` use. Type this into the `comment` block and evaluate it:
 
@@ -127,7 +129,7 @@ To do it:
 
 1. In `src/aoc/day42.clj`, set `example` to the example input above, one word per line inside the string.
 2. In `test/aoc/day42_test.clj`, replace `:answer-from-the-puzzle` with `2`.
-3. Write `part-1` in the REPL first. Evaluate `(parse example)` to see what you're working with, then build up the answer one step at a time. You'll probably want `filter` and `count`.
+3. Write `part-1` in the REPL first. Load the new file into the REPL: in Calva, run **Calva: Load/Evaluate Current File and its Requires/Dependencies**. Each time you change `example`, evaluate it again so the REPL sees the new value. Evaluate `(parse example)` to see what you're working with, then build up the answer one step at a time. You'll probably want `filter` and `count`.
 4. Run `bb test` again until it reports `0 failures, 0 errors`.
 
 <details>
@@ -189,7 +191,7 @@ When a real puzzle comes out, say Day 1, run `bb new-day 1` and follow the same 
 
 If the file isn't there, you'll get `No input at inputs/day01.txt. Save your puzzle input there.`
 
-`inputs/` is git-ignored. Advent of Code asks that you don't publish your inputs ([FAQ](https://adventofcode.com/2025/about)).
+`inputs/` is git-ignored. Advent of Code asks that you don't publish your inputs ([FAQ](https://adventofcode.com/2026/about)).
 
 ## 6. Tour the how-tos
 
@@ -200,19 +202,22 @@ If the file isn't there, you'll get `No input at inputs/day01.txt. Save your puz
 | [`json_csv.clj`](../src/howto/json_csv.clj) | Pull numbers out of a line with a regex, read comma-separated lines as data, and read JSON and real CSV | ...each line is a list of numbers, or the input is JSON |
 | [`parsing.clj`](../src/howto/parsing.clj) | Parse structured lines with an [instaparse](https://github.com/Engelberg/instaparse) grammar | ...the input is a list of instructions in a small made-up language |
 | [`combinatorics.clj`](../src/howto/combinatorics.clj) | Generate combinations, permutations, Cartesian products, and subsets | ..."every pair", "every ordering", or "try all choices" |
-| [`graphs.clj`](../src/howto/graphs.clj) | Do a breadth-first search by hand, then use [loom](https://github.com/aysylu/loom) for paths, connected components, and topological sort | ..."fewest steps", "which groups are connected", or "A must happen before B" |
+| [`graphs.clj`](../src/howto/graphs.clj) | Do a breadth-first search by hand, then use [loom](https://github.com/clj-commons/loom) for paths, connected components, and topological sort | ..."fewest steps", "which groups are connected", or "A must happen before B" |
 | [`shortest_path.clj`](../src/howto/shortest_path.clj) | Find the cheapest path with Dijkstra's algorithm and a priority map | ..."lowest risk" or "cheapest route", where steps cost different amounts |
 | [`hashing.clj`](../src/howto/hashing.clj) | Compute MD5 and SHA-256 hashes, with a library and with plain Java | ...find a hash that starts with some zeros |
 | [`channels.clj`](../src/howto/channels.clj) | Chain processes together with core.async channels | ...machines that feed their output into each other |
+| [`errors.clj`](../src/howto/errors.clj) | Read an error message and trace it to the line that caused it | ...your code throws an error and you're not sure why |
 | [`datomic.clj`](../src/howto/datomic.clj) | Load data into an in-memory Datomic database and query it with Datalog | ...you want to ask questions of your data, like a database (optional; most puzzles don't need it) |
 
 One more how-to, `core.async.flow`, lives in `flow/` because it needs the `:flow` alias. The [README](../README.md#aliases) explains how to use it.
 
-Try changing an example and seeing what happens. For instance, change the grid in `shortest_path.clj` and re-evaluate `dijkstra`. You can't break anything that `git checkout` can't fix.
+Try changing an example and seeing what happens. For instance, in `shortest_path.clj`, change `example-grid`, evaluate it again, then re-evaluate the `(dijkstra ...)` call in the `comment` block. You can't break anything that `git checkout` can't fix.
 
 ## Where to go next
 
 - [ClojureDocs](https://clojuredocs.org) has community examples for every core function.
-- The [clojure.org guides](https://clojure.org/guides/getting_started) cover the language and its tools.
+- The [clojure.org guides](https://clojure.org/guides/getting_started) cover the language and its tools. [Programming at the REPL](https://clojure.org/guides/repl/introduction) and the [Deps and CLI guide](https://clojure.org/guides/deps_and_cli) go deeper on the REPL and the `clojure` command.
+- Calva's [Evaluate Clojure Code](https://calva.io/eval-tips/) page shows more ways to evaluate from the editor.
+- The Babashka book's [task runner](https://book.babashka.org/#tasks) chapter explains how `bb.edn` tasks work.
 - The [README](../README.md) lists every command, alias, and library in this template.
 - If you use an AI assistant, [`AGENTS.md`](../AGENTS.md) asks it to act as a tutor: it should give hints instead of solving the puzzle for you.

@@ -23,4 +23,4 @@ These instructions are a request to the agent, not a lock. An agent that can run
 
 ## Optional: an MCP server for agent memory
 
-`ai/mcp.json` declares [basic-memory](https://github.com/basicmachines-co/basic-memory), which gives an agent a persistent notes store. To use it with Claude Code, copy it to the repo root as `.mcp.json`, after installing basic-memory (e.g. `brew install basic-memory`).
+`ai/mcp.json` declares [basic-memory](https://github.com/basicmachines-co/basic-memory), which gives an agent a persistent notes store. To use it with Claude Code, copy it to the repo root as `.mcp.json`, after installing basic-memory. Its [README](https://github.com/basicmachines-co/basic-memory) gives the install command, currently `uv tool install basic-memory --prerelease=allow`.
