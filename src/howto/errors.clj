@@ -1,6 +1,10 @@
 (ns howto.errors
   "How to read an error. The full reference is \"Error printing\" on
-  https://clojure.org/reference/repl_and_main#error_printing"
+  https://clojure.org/reference/repl_and_main#error_printing
+
+  The functions used here: pst is in
+  https://clojure.github.io/clojure/clojure.repl-api.html and ex-triage and
+  ex-str are in https://clojure.github.io/clojure/clojure.main-api.html"
   (:require [clojure.main :as main]
             [clojure.repl :as repl]
             [clojure.string :as str]))
@@ -17,21 +21,21 @@
 
   (total "1\n2\n\n3")
   ;; The REPL prints a two-line summary:
-  ;;   Execution error (NullPointerException) at howto.errors/total (errors.clj:13).
+  ;;   Execution error (NullPointerException) at howto.errors/total (errors.clj:17).
   ;;   Cannot invoke "Object.getClass()" because "x" is null
   ;; Read the first line in three parts:
   ;;   Execution error       your code ran, then threw. ("Syntax error" means
   ;;                         it didn't compile: check brackets and spelling.)
   ;;   NullPointerException  something was nil that shouldn't be.
   ;;   howto.errors/total    the function to look at first.
-  ;; The second line comes from Java. "x" is a name inside Clojure's +,
-  ;; not one of yours.
+  ;; The second line comes from Java. "x" is a parameter inside
+  ;; clojure.lang.Numbers, the Java code behind +, not one of yours.
 
   ;; *e holds the last exception the REPL saw. pst prints its stack trace,
   ;; 12 lines unless you ask for more. Here the top 14 lines are all
   ;; Clojure's own code (clojure.lang.Numbers, clojure.core/+, reduce...), so
   ;; ask for more and scan down for the first line that names your namespace:
-  ;;   howto.errors/total (errors.clj:13)
+  ;;   howto.errors/total (errors.clj:17)
   (repl/pst *e 20)
 
   ;; ex-triage does that scan for you: it's what the REPL uses to build the
