@@ -47,9 +47,8 @@
   )
 
 ;; --- Brain teaser: "Needle in a Haystack" ------------------------------------
-;; Puzzle 9 from Clojure Brain Teasers by Alex Miller and Lorilyn Jordan
-;; Miller (Pragmatic Bookshelf, 2025), used with permission. Copyright (c) 2025
-;; The Pragmatic Programmers, LLC. Not covered by this repo's licence.
+;; Puzzle 9 from Clojure Brain Teasers by Alex Miller and L. Jordan
+;; Miller (Pragmatic Bookshelf, 2025).
 ;; https://pragprog.com/titles/mmclobrain/clojure-brain-teasers/
 ;; Guess each result before you evaluate it; the book's answers follow.
 (comment
